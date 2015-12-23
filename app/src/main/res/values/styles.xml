@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--<style name="AppTheme" parent="android:Theme.Material">-->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowContentOverlay">@color/primary</item>
+
+        <item name="actionModeStyle">@style/AppBaseThemeMaterial.ActionMode</item>
+    </style>
+
+
+
+    <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/primary</item>
+    </style>
+
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--<item name="colorPrimary">#673AB7</item>-->
+    <!--<item name="colorPrimaryDark">#512DA8</item>-->
+    <!--<item name="colorAccent">#FF4081</item>-->
+    <!--</style>-->
+</resources>

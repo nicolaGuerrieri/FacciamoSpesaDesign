@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Facciamo Spesa</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_section1">Lista della spesa</string>
+    <string name="title_section2">Fidelity card</string>
+    <string name="title_section4">Connection</string>
+    <string name="button_scan">Scan</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="prodotto">Prodotto</string>
+    <string name="action_home">Home</string>
+    <string name="codice">Codice cliente</string>
+    <string name="action_name">Salva</string>
+
+    action_name
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="negozi">
+        <item></item>
+        <item>coop</item>
+        <item>despar</item>
+        <item>decathlon</item>
+        <item>conad</item>
+        <item>pam</item>
+        <item>esselunga</item>
+        <item>meta</item>
+        <item>arcaplanet</item>
+    </string-array>
+</resources>
