@@ -263,8 +263,6 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, fragment).commitAllowingStateLoss();
                 } else {
-
-
                     //abortito chiamata
                     onNavigationDrawerItemSelected(2);
                 }
@@ -283,4 +281,16 @@ public class MainActivity extends AppCompatActivity
     }
 }
 
-//https://github.com/nicolaGuerrieri/facciamoSpesaMaterial.git
+
+/**
+ * come inserire il menu action bar
+ * You should consider from your Fragment code:
+ * <p/>
+ * 1) Implementing onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+ * <p/>
+ * 2) Calling setHasOptionsMenu
+ * <p/>
+ * 3) And also implementing onOptionsItemSelected(MenuItem item)
+ * <p/>
+ * Then you will be ok on both the phone and tablet.
+ **/

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,11 +149,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ViewHolder carta = (ViewHolder) view.getTag();
-/**
- Intent intentShowResult = new Intent(getBaseContext(), ViewActivityCarta.class);
- intentShowResult.putExtra("carta", (int) carta.getId());
- startActivity(intentShowResult);
- **/
+
                 showCarta(carta.getIdCarta());
                 mListView.setItemChecked(position, false);
             }
@@ -318,7 +316,6 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-
             return false;
         }
 
@@ -360,29 +357,80 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         int id = item.getItemId();
 
         if (id == R.id.action_info) {
-
-// apriamo dialog per spiegare
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.setContentView(R.layout.dialog_custom);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-            TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
-
-            tw.setText("Inserisci i prodotti per la tua lista della spesa e clicca il tasto più per aggiungerli");
-            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-            // if button is clicked, close the custom dialog
-            dialogButton.setText("Next");
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
+            apriDialogCarte("Aggiungi le tue fidelity card, clicca su scan", 1);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void apriDialogCarte(String messaggio, int step) {
+        // apriamo dialog per spiegare
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.dialog_custom);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        ImageView iw = (ImageView) dialog.findViewById(R.id.imageDialog);
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
+
+
+        Drawable res = null;
+        Integer imageResource = null;
+
+
+        tw.setText(messaggio);
+        // if button is clicked, close the custom dialog
+        dialogButton.setText("Next");
+
+        switch (step) {
+            case 1:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        apriDialogCarte("Inquadra il tuo codice a barre e attendi la scansione", 2);
+                    }
+                });
+                break;
+            case 2:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        apriDialogCarte("Inquadra il tuo codice a barre e attendi la scansione", 3);
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/carta", null, getActivity().getPackageName());
+                break;
+            case 3:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        apriDialogCarte("Seleziona il negozio a cui appartiene la fidelity card", 4);
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/scegli", null, getActivity().getPackageName());
+                break;
+            default:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/nomecarta", null, getActivity().getPackageName());
+                dialogButton.setText("Ok");
+                break;
+        }
+
+
+        if(imageResource != null) {
+            res = getActivity().getResources().getDrawable(imageResource);
+            iw.setImageDrawable(res);
+        }
+        dialog.show();
+
     }
 }
