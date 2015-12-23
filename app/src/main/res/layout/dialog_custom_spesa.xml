@@ -16,9 +16,9 @@
     <TextView
         android:id="@+id/textDialog"
         android:layout_width="300dp"
-        android:layout_height="20dp"
+        android:layout_height="50dp"
         android:textColor="@color/white"
-        android:textSize="15dp"
+        android:textSize="20dp"
         android:layout_below="@+id/imageDialog"
         android:layout_centerHorizontal="true" />
 

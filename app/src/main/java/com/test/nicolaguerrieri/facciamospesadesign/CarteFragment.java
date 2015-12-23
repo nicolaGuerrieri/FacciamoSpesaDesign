@@ -2,6 +2,7 @@ package com.test.nicolaguerrieri.facciamospesadesign;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -61,7 +62,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
     private List<Carta> listaCarte = null;
 
 
-            SQLiteDatabase sampleDB = null;
+    SQLiteDatabase sampleDB = null;
 
     // TODO: Rename and change types of parameters
     public static CarteFragment newInstance(String param1, String param2) {
@@ -84,7 +85,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -116,7 +117,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         });
 
 
-        if(listaCarte.size() == 0){
+        if (listaCarte.size() == 0) {
             final Dialog dialog = new Dialog(getActivity());
             dialog.setContentView(R.layout.dialog_custom);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -124,7 +125,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
             TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
 
-            tw.setText("Scansiona la tua carta fedeltà e portala sempre con te");
+            tw.setText("Inizia ad aggiungere le tue fidelity card per portarle sempre con te...");
             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
             // if button is clicked, close the custom dialog
             dialogButton.setText("Ok");
@@ -138,7 +139,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
             dialog.show();
             mListView.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             mListView.setVisibility(View.VISIBLE);
         }
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -173,12 +174,6 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         });
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_carte, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     public void showCarta(int idCarta) {
@@ -301,6 +296,12 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
     }
 
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_carte, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
         @Override
@@ -317,6 +318,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
             return false;
         }
 
@@ -349,4 +351,38 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_info) {
+
+// apriamo dialog per spiegare
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.dialog_custom);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+            TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
+
+            tw.setText("Inserisci i prodotti per la tua lista della spesa e clicca il tasto più per aggiungerli");
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+            // if button is clicked, close the custom dialog
+            dialogButton.setText("Next");
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

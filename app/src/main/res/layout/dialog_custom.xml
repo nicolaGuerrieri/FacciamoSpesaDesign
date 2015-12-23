@@ -16,11 +16,11 @@
     <TextView
         android:id="@+id/textDialog"
         android:layout_width="300dp"
-        android:layout_height="20dp"
+        android:layout_height="60dp"
         android:text="Scansiona la tua carta fedeltà e portala sempre con te"
         android:textColor="@color/white"
-        android:textSize="15dp"
-        android:layout_alignBottom="@+id/image"
+        android:textSize="20dp"
+        android:layout_below="@+id/image"
         android:layout_centerHorizontal="true" />
 
     <Button
