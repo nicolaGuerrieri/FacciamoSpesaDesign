@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,6 +64,14 @@ public class CarteViewFragment extends Fragment {
         if (getArguments() != null) {
             idCarta = getArguments().getInt("carta");
         }
+        //parametri display TODO
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        float bo = lp.screenBrightness;
+        float newBrightness = (float) 100;
+        lp.screenBrightness = newBrightness / (float) 255;
+
+        savedInstanceState.putSerializable("luminosita", bo);
+        getActivity().getWindow().setAttributes(lp);
     }
 
     @Override

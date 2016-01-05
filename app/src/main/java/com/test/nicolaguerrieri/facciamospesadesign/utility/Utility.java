@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -88,6 +90,13 @@ public class Utility {
     // convert from byte array to bitmap
     public Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public WindowManager.LayoutParams setLuminosita(WindowManager.LayoutParams lp, float luminosita) {
+        float newBrightness =  luminosita;
+        lp.screenBrightness = newBrightness / (float) 255;
+
+        return lp;
     }
 
 }
