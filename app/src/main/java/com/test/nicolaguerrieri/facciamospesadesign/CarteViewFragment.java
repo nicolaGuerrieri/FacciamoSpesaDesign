@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import com.test.nicolaguerrieri.facciamospesadesign.model.Carta;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
-import com.test.nicolaguerrieri.facciamospesadesign.utility.Utility;
 
 
 /**
@@ -40,6 +38,11 @@ public class CarteViewFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private int idCarta;
+
+    //luminosita
+    public float vecchiaLuminosita = 0F;
+    WindowManager.LayoutParams lp = null;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,12 +68,11 @@ public class CarteViewFragment extends Fragment {
             idCarta = getArguments().getInt("carta");
         }
         //parametri display TODO
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        float bo = lp.screenBrightness;
+        lp = getActivity().getWindow().getAttributes();
+        vecchiaLuminosita = lp.screenBrightness;
         float newBrightness = (float) 100;
         lp.screenBrightness = newBrightness / (float) 255;
 
-        savedInstanceState.putSerializable("luminosita", bo);
         getActivity().getWindow().setAttributes(lp);
     }
 
@@ -114,13 +116,23 @@ public class CarteViewFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        //parametri display TODO
+        lp.screenBrightness = vecchiaLuminosita / (float) 255;
+        getActivity().getWindow().setAttributes(lp);
+        mListener = null;
+    }
+
+
     public Carta findCarta(Integer idCarta) {
 
         final String METHOD_NAME = ".modificaComponente() ";
         Log.d(METHOD_NAME, "invocata onActivityResult");
         Carta carta = null;
 
-        sampleDB = getActivity().openOrCreateDatabase(Costanti.dbName, getActivity().MODE_PRIVATE, null);
+        sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         if (sampleDB != null) {
 //            sampleDB.execSQL(Costanti.QUERY_DROP);
@@ -128,9 +140,9 @@ public class CarteViewFragment extends Fragment {
             Log.d(METHOD_NAME, "queryCreate: " + queryCreate);
 
 
-            Cursor risultato = sampleDB.query(Costanti.tableName, new String[]{
-                            Costanti.columnNameID, Costanti.columnNameNome, Costanti.columnNameImmagine, Costanti.columnNameLogo, Costanti.columnNameCodice},
-                    Costanti.columnNameID + "=?", new String[]{String.valueOf(idCarta)},
+            Cursor risultato = sampleDB.query(Costanti.TABLE_NAME_CARTE, new String[]{
+                            Costanti.COLUMN_NAME_ID, Costanti.COLUMN_NAME_NOME, Costanti.COLUMN_NAME_IMMAGINE, Costanti.COLUMN_NAME_LOGO, Costanti.COLUMN_NAME_CODICE},
+                    Costanti.COLUMN_NAME_ID + "=?", new String[]{String.valueOf(idCarta)},
                     null, null, null, null);
             Log.d(METHOD_NAME, "risultato.size: " + risultato.getCount());
 
@@ -139,11 +151,11 @@ public class CarteViewFragment extends Fragment {
                 if (risultato.moveToFirst()) {
                     do {
                         carta = new Carta();
-                        carta.setId(risultato.getColumnIndex(Costanti.columnNameID));
-                        carta.setTitolo(risultato.getString(risultato.getColumnIndex(Costanti.columnNameNome)));
-                        carta.setLogo(risultato.getString(risultato.getColumnIndex(Costanti.columnNameLogo)));
-                        carta.setCodice(risultato.getString(risultato.getColumnIndex(Costanti.columnNameCodice)));
-                        byte[] image = risultato.getBlob(risultato.getColumnIndex(Costanti.columnNameImmagine));
+                        carta.setId(risultato.getColumnIndex(Costanti.COLUMN_NAME_ID));
+                        carta.setTitolo(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_NOME)));
+                        carta.setLogo(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_LOGO)));
+                        carta.setCodice(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_CODICE)));
+                        byte[] image = risultato.getBlob(risultato.getColumnIndex(Costanti.COLUMN_NAME_IMMAGINE));
                         Log.d(METHOD_NAME, "immagine: " + image.length);
                         if (image != null) {
                             Bitmap b = BitmapFactory.decodeByteArray(image, 0, image.length);
@@ -185,7 +197,6 @@ public class CarteViewFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**

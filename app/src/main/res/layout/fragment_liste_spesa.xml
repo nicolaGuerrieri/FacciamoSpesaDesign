@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.test.nicolaguerrieri.facciamospesadesign.ListeSpesaFragment">
+
+    <EditText
+        android:id="@+id/nuovaLista"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/liste" />
+
+    <Button
+        android:id="@+id/creaLista"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+
+        android:layout_toEndOf="@+id/nuovaLista"
+        android:background="@drawable/freccia_go" />
+
+
+    <ListView
+        android:id="@+id/listeSpesa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myListe"
+        android:divider="#000000" />
+
+    <TextView
+        android:id="@+id/myListe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/creaLista"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="@string/myListe"
+        android:textSize="20dp"
+        android:visibility="invisible" />
+
+</RelativeLayout>

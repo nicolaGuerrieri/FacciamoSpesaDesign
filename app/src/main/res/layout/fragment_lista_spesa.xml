@@ -2,31 +2,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.test.nicolaguerrieri.facciamospesadesign.ListaSpesaFragment">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.test.nicolaguerrieri.facciamospesadesign.ListaSpesaFastFragment">
 
 
-
-
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/nuovoProdotto"
-        android:layout_width="245dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/listaSpesa"
         android:layout_gravity="left|top"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="31dp"
-        android:hint="@string/prodotto"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/listaSpesa" />
+        android:hint="@string/prodotto" />
 
     <Button
         android:id="@+id/aggiungi"
         android:layout_width="50dp"
+        android:layout_marginRight="20dp"
         android:layout_height="50dp"
-        android:layout_gravity="right|top"
-        android:layout_marginRight="25dp"
-        android:background="@drawable/piu_blu"
         android:layout_alignBottom="@+id/nuovoProdotto"
-        android:layout_alignEnd="@+id/listaSpesa" />
+        android:layout_alignEnd="@+id/listaSpesa"
+        android:layout_gravity="right|top"
+        android:background="@drawable/piu_blu" />
 
     <ListView
         android:id="@+id/listaSpesa"
@@ -36,4 +36,16 @@
         android:layout_margin="10dp"
         android:layout_marginTop="34dp"
         android:divider="#000000" />
+
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:hint="@string/numero"
+        android:id="@+id/quantita"
+        android:layout_above="@+id/listaSpesa"
+        android:layout_toStartOf="@+id/aggiungi"
+        android:layout_marginEnd="20dp" />
 </RelativeLayout>

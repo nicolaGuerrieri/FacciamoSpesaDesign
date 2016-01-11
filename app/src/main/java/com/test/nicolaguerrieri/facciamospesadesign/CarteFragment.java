@@ -2,7 +2,6 @@ package com.test.nicolaguerrieri.facciamospesadesign;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -19,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,7 +28,6 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.test.nicolaguerrieri.facciamospesadesign.adapter.ImageAdapter;
-import com.test.nicolaguerrieri.facciamospesadesign.dummy.DummyContent;
 import com.test.nicolaguerrieri.facciamospesadesign.model.Carta;
 import com.test.nicolaguerrieri.facciamospesadesign.model.ViewHolder;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
@@ -64,6 +61,8 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
     private ActionMode mActionMode;
     private List<Carta> listaCarte = null;
 
+    TextView noCarteText;
+    ImageView imageViewNoCarte;
 
     SQLiteDatabase sampleDB = null;
 
@@ -110,6 +109,10 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);
 
+        noCarteText = (TextView) view.findViewById(R.id.textNoCarte);
+        imageViewNoCarte = (ImageView) view.findViewById(R.id.immagineNoCarte);
+
+        showResultLista();
 
         Button buttonScan = (Button) view.findViewById(R.id.scanCarta);
         buttonScan.setOnClickListener(new View.OnClickListener() {
@@ -120,31 +123,6 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         });
 
 
-        if (listaCarte.size() == 0) {
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.setContentView(R.layout.dialog_custom);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-            TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
-
-            tw.setText("Inizia ad aggiungere le tue fidelity card per portarle sempre con te...");
-            Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-            // if button is clicked, close the custom dialog
-            dialogButton.setText("Ok");
-
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-            mListView.setVisibility(View.INVISIBLE);
-        } else {
-            mListView.setVisibility(View.VISIBLE);
-        }
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -176,15 +154,43 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         return view;
     }
 
-    public void showCarta(int idCarta) {
+    public void showResultLista() {
 
-        CarteViewFragment goViewCarta = new CarteViewFragment();
+        if (listaCarte.size() == 0) {
+            /**  final Dialog dialog = new Dialog(getActivity());
+             dialog.setContentView(R.layout.dialog_custom);
+             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+             TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
+
+             tw.setText("Inizia ad aggiungere le tue fidelity card per portarle sempre con te...");
+             Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+             // if button is clicked, close the custom dialog
+             dialogButton.setText("Ok");
+
+             dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+            dialog.dismiss();
+            }
+            });
+
+             dialog.show();**/
+            imageViewNoCarte.setVisibility(View.VISIBLE);
+            noCarteText.setVisibility(View.VISIBLE);
+
+            mListView.setVisibility(View.INVISIBLE);
+        } else {
+            imageViewNoCarte.setVisibility(View.INVISIBLE);
+            noCarteText.setVisibility(View.INVISIBLE);
+            mListView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void showCarta(int idCarta) {
         Bundle args = new Bundle();
         args.putInt("carta", idCarta);
-        goViewCarta.setArguments(args);
-        this.getFragmentManager().beginTransaction()
-                .replace(R.id.container, goViewCarta).addToBackStack(null).commit();
-
+        ((MainActivity) getActivity()).goToFragmentMenu(3, args);
     }
 
     @Override
@@ -209,22 +215,9 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
         }
     }
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -256,17 +249,17 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         final String METHOD_NAME = ".getCarte() ";
 
         List<Carta> listaCarte = new ArrayList<Carta>();
-        sampleDB = getActivity().openOrCreateDatabase(Costanti.dbName, getActivity().MODE_PRIVATE, null);
+        sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         if (sampleDB != null) {
-            Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.tableName + "' and type='table'", null);
+            Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.TABLE_NAME_CARTE + "' and type='table'", null);
             Log.d(METHOD_NAME, "tableExist: " + tableExist);
             if (tableExist != null) {
 
                 String queryCreate = Costanti.QUERY_CREATE;
                 Log.d(METHOD_NAME, "queryCreate: " + queryCreate);
                 sampleDB.execSQL(queryCreate);
-                Cursor risultato = sampleDB.rawQuery("SELECT * FROM " + Costanti.tableName, null);
+                Cursor risultato = sampleDB.rawQuery("SELECT * FROM " + Costanti.TABLE_NAME_CARTE, null);
                 Log.d(METHOD_NAME, "risultato.size: " + risultato.getCount());
                 Carta carta = null;
                 if (risultato != null) {
@@ -274,11 +267,11 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
                     if (risultato.moveToFirst()) {
                         do {
                             carta = new Carta();
-                            carta.setId(risultato.getInt(risultato.getColumnIndex(Costanti.columnNameID)));
-                            carta.setTitolo(risultato.getString(risultato.getColumnIndex(Costanti.columnNameNome)));
-                            carta.setLogo(risultato.getString(risultato.getColumnIndex(Costanti.columnNameLogo)));
-                            carta.setCodice(risultato.getString(risultato.getColumnIndex(Costanti.columnNameCodice)));
-                            byte[] image = risultato.getBlob(risultato.getColumnIndex(Costanti.columnNameImmagine));
+                            carta.setId(risultato.getInt(risultato.getColumnIndex(Costanti.COLUMN_NAME_ID)));
+                            carta.setTitolo(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_NOME)));
+                            carta.setLogo(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_LOGO)));
+                            carta.setCodice(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_CODICE)));
+                            byte[] image = risultato.getBlob(risultato.getColumnIndex(Costanti.COLUMN_NAME_IMMAGINE));
                             Log.d(METHOD_NAME, "immagine: " + image.length);
                             if (image != null) {
                                 Bitmap b = BitmapFactory.decodeByteArray(image, 0, image.length);
@@ -330,7 +323,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
             } else if (id == R.id.action_trash) {
                 int item_postion = Integer.parseInt(mode.getTag().toString());
                 Carta carta = (Carta) mListView.getAdapter().getItem(item_postion);
-                sampleDB.execSQL("DELETE FROM " + Costanti.tableName + " WHERE " + Costanti.columnNameNome + "='" + carta.getTitolo() + "' and " + Costanti.columnNameLogo + "='" + carta.getLogo() + "' and " + Costanti.columnNameID + "='" + carta.getId() + "'");
+                sampleDB.execSQL("DELETE FROM " + Costanti.TABLE_NAME_CARTE + " WHERE " + Costanti.COLUMN_NAME_NOME + "='" + carta.getTitolo() + "' and " + Costanti.COLUMN_NAME_LOGO + "='" + carta.getLogo() + "' and " + Costanti.COLUMN_NAME_ID + "='" + carta.getId() + "'");
                 Log.d("", "eliminato: " + item);
                 listaCarte.remove(item_postion);
                 mAdapter.notifyDataSetChanged();
@@ -359,6 +352,8 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         int id = item.getItemId();
 
         if (id == R.id.action_info) {
+            imageViewNoCarte.setVisibility(View.INVISIBLE);
+            noCarteText.setVisibility(View.INVISIBLE);
             apriDialogCarte("Aggiungi le tue fidelity card, clicca su scan", 1);
         }
 
@@ -422,6 +417,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+                        showResultLista();
                     }
                 });
                 imageResource = getActivity().getResources().getIdentifier("@drawable/nomecarta2", null, getActivity().getPackageName());
@@ -430,7 +426,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         }
 
 
-        if(imageResource != null) {
+        if (imageResource != null) {
             res = getActivity().getResources().getDrawable(imageResource);
             iw.setImageDrawable(res);
         }

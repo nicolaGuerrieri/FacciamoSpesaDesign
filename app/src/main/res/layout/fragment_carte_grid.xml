@@ -5,6 +5,29 @@
     android:layout_height="match_parent"
     tools:context="com.test.nicolaguerrieri.facciamospesadesign.CarteFragment">
 
+
+    <ImageView
+        android:id="@+id/immagineNoCarte"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="invisible"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/frecciatrasparente"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp" />
+
+    <TextView
+        android:id="@+id/textNoCarte"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:visibility="invisible"
+        android:text="Scansiona la tua carta fedeltà e portala sempre con te"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_below="@+id/immagineNoCarte"
+        android:layout_centerHorizontal="true" />
+
     <GridView
         android:id="@android:id/list"
         android:visibility="invisible"

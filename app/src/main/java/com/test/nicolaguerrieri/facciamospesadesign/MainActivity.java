@@ -21,9 +21,12 @@ import android.view.ViewGroup;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class MainActivity extends AppCompatActivity
-        implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener {
+        implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
     public float schermoLum = 0F;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +56,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void setSchermo(){
-
-    }
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -62,14 +63,13 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         switch (position) {
             default:
-            case 0:
-                fragment = new WelcomeFragment().newInstance("", "");
+            case Costanti.LISTA_FRAGMENT:
+                fragment = new ListaSpesaFastFragment().newInstance("", "");
                 break;
-            case 1:
-                fragment = new ListaSpesaFragment().newInstance("", "");
+            case Costanti.LISTE_SPESA_FRAGMENT:
+                fragment = new ListeSpesaFragment().newInstance("", "");
                 break;
-
-            case 2:
+            case Costanti.CARTE_FRAGMENT:
                 fragment = new CarteFragment().newInstance("", "");
                 break;
         }
@@ -79,22 +79,89 @@ public class MainActivity extends AppCompatActivity
 
         // PER ELIMINARE IL COMPORTAMENTO PER CUI IL TASTO INDIETRO PORTA AL FRAGMENT PRECEDENTE BASTA RIMUOVERE
         // addToBackStack(null).
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment).commitAllowingStateLoss();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right_);
+        fragmentTransaction.replace(R.id.container, fragment).commitAllowingStateLoss();
         onSectionAttached(position + 1);
         getSupportActionBar().setTitle(mTitle);
     }
 
+    public void goToFragmentMenu(int position) {
+        onNavigationDrawerItemSelected(position);
+    }
+
+    /**
+     * public static  final int WELCOME_FRAGMENT= 1;
+     * public static  final int LISTA_FRAGMENT= 0;
+     * public static  final int CARTE_FRAGMENT= 2;
+     * public static  final int VIEW_CARTA_FRAGMENT= 3;
+     * public static  final int SCAN_CARTA_FRAGMENT= 4;
+     **/
+
+    public void goToFragmentMenu(int position, Bundle bundleArgument) {
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = null;
+        switch (position) {
+            default:
+            case Costanti.LISTA_FRAGMENT:
+                fragment = new ListaSpesaFastFragment().newInstance("", "");
+                break;
+            case Costanti.LISTE_SPESA_FRAGMENT:
+                fragment = new ListeSpesaFragment().newInstance("", "");
+                break;
+            case Costanti.CARTE_FRAGMENT:
+                fragment = new CarteFragment().newInstance("", "");
+                break;
+            case Costanti.VIEW_CARTA_FRAGMENT:
+                fragment = new CarteViewFragment().newInstance("", "");
+                break;
+            case Costanti.SCAN_CARTA_FRAGMENT:
+                fragment = new ScanResultFragment().newInstance("", "");
+                break;
+        }
+        if (bundleArgument != null) {
+            bundleArgument.putInt(ARG_SECTION_NUMBER, position);
+            fragment.setArguments(bundleArgument);
+        }
+        // PER ELIMINARE IL COMPORTAMENTO PER CUI IL TASTO INDIETRO PORTA AL FRAGMENT PRECEDENTE BASTA RIMUOVERE
+        // addToBackStack(null).
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right_);
+        fragmentTransaction.replace(R.id.container, fragment).commitAllowingStateLoss();
+
+        if (bundleArgument.getBoolean("crea", false)) {
+            onSectionAttached(position + 1, bundleArgument.getString("nomeLista"));
+        } else {
+            onSectionAttached(position + 1);
+        }
+        getSupportActionBar().setTitle(mTitle);
+    }
+
     public void onSectionAttached(int number) {
+        onSectionAttached(number, null);
+    }
+
+    public void onSectionAttached(int number, String nomeLista) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_home);
+                if (!StringUtils.isBlank(nomeLista)) {
+                    mTitle = "Lista " + nomeLista;
+                } else {
+                    mTitle = getString(R.string.title_todo);
+                }
                 break;
             case 2:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.title_liste);
                 break;
             case 3:
                 mTitle = getString(R.string.title_section2);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section3);
+                break;
+            case 5:
+                mTitle = getString(R.string.title_section4);
                 break;
 
         }
@@ -258,13 +325,14 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = null;
             if (scanResult != null) {
                 if (scanResult.getContents() != null) {
-                    fragment = new ScanResultFragment().newInstance("", "");
+                    /** fragment = new ScanResultFragment().newInstance("", "");
+                     fragment.setArguments(args);
+                     getSupportFragmentManager().beginTransaction()
+                     .replace(R.id.container, fragment).commitAllowingStateLoss();**/
                     Bundle args = new Bundle();
                     args.putInt(ARG_SECTION_NUMBER, 1);
                     args.putString("codice", scanResult.getContents());
-                    fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, fragment).commitAllowingStateLoss();
+                    goToFragmentMenu(4, args);
                 } else {
                     //abortito chiamata
                     onNavigationDrawerItemSelected(2);

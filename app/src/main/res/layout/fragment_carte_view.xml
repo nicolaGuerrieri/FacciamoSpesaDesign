@@ -20,6 +20,9 @@
             android:layout_marginTop="40dp"
             android:id="@+id/viewCarta"
             />
+
+
+
         <TextView
             android:layout_width="333dp"
             android:layout_height="40dp"

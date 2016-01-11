@@ -12,9 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -152,15 +150,13 @@ public class ScanResultFragment extends Fragment {
 
 
     public void goCarte() {
-        CarteFragment vaiCarte = new CarteFragment();
-        this.getFragmentManager().beginTransaction()
-                .replace(R.id.container, vaiCarte).addToBackStack(null).commit();
+        ((MainActivity) getActivity()).goToFragmentMenu(2);
     }
 
     public boolean saveCarta(Carta carta) {
         final String METHOD_NAME = ".saveCarta() ";
 
-        sampleDB = getActivity().openOrCreateDatabase(Costanti.dbName, getActivity().MODE_PRIVATE, null);
+        sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         if (sampleDB != null) {
 //            sampleDB.execSQL(Costanti.QUERY_DROP);
@@ -170,7 +166,7 @@ public class ScanResultFragment extends Fragment {
 
             byte[] byteArray = utility.getBytes(carta.getIcona());
             Log.d(METHOD_NAME, "byteArray: " + byteArray.length);
-            String queryInsert = "INSERT INTO " + Costanti.tableName + "(" + Costanti.columnNameNome + "," + Costanti.columnNameImmagine + "," + Costanti.columnNameLogo + "," + Costanti.columnNameCodice + ") values (?,?,?,?)";
+            String queryInsert = "INSERT INTO " + Costanti.TABLE_NAME_CARTE + "(" + Costanti.COLUMN_NAME_NOME + "," + Costanti.COLUMN_NAME_IMMAGINE + "," + Costanti.COLUMN_NAME_LOGO + "," + Costanti.COLUMN_NAME_CODICE + ") values (?,?,?,?)";
 
 
             SQLiteStatement insertStmt = sampleDB.compileStatement(queryInsert);
@@ -180,7 +176,7 @@ public class ScanResultFragment extends Fragment {
             insertStmt.bindString(3, carta.getLogo());
             insertStmt.bindString(4, carta.getCodice());
             Long idCarta = insertStmt.executeInsert();
-            Log.d(METHOD_NAME, "queryInsert: " + queryInsert);
+           // Log.d(METHOD_NAME, "queryInsert: " + queryInsert);
 
 
 //            sampleDB.execSQL(queryInsert);

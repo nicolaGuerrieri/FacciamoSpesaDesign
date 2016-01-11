@@ -2,9 +2,16 @@
     <string name="app_name">Facciamo Spesa</string>
 
     <string name="title_home">Home</string>
+    <string name="title_liste">Liste della spesa</string>
+    <string name="title_todo">To do...</string>
+
     <string name="title_section1">Lista della spesa</string>
     <string name="title_section2">Fidelity card</string>
-    <string name="title_section4">Connection</string>
+    <string name="title_section3">Mostra Carta </string>
+    <string name="title_section4">Crea Fidelity Card</string>
+
+
+    <string name="title_section5">Connection</string>
     <string name="button_scan">Scan</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,15 +19,20 @@
 
     <string name="action_example">Example action</string>
     <string name="prodotto">Prodotto</string>
+    <string name="numero">n.°</string>
+    <string name="liste">Nome o data nuova lista</string>
+    <string name="myListe">Le mie liste</string>
     <string name="action_home">Home</string>
     <string name="codice">Codice cliente</string>
     <string name="action_name">Salva</string>
+    <string name="action_new_list">Nuova lista</string>
 
     action_name
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="introText">Ciao <br /> prova la mia app, nasce da un\'esigenza personale, attraverso il menu a sinistra scegli la funzione che ti interessa </string>
 
 
     <string-array name="negozi">

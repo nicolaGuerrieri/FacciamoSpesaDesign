@@ -109,12 +109,12 @@ public class NavigationDrawerFragment extends Fragment {
                 R.layout.item_drawer,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_home),
-                        getString(R.string.title_section1),
+                        getString(R.string.title_todo),
+                        getString(R.string.title_liste),
                         getString(R.string.title_section2),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-    //    mDrawerListView.setBackgroundColor(getResources().getColor(R.color.lightBlue));
+        //    mDrawerListView.setBackgroundColor(getResources().getColor(R.color.lightBlue));
         return drawerView;
     }
 
@@ -167,7 +167,7 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 //chiudo la tastiera se è aperta
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(drawerView.getWindowToken(), 0);
 
 
@@ -248,7 +248,7 @@ public class NavigationDrawerFragment extends Fragment {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
         if (mDrawerLayout != null && isDrawerOpen()) {
-           // inflater.inflate(R.menu.global, menu);
+            // inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
