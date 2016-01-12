@@ -5,17 +5,28 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/articolo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Header" />
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/numeroPezzi"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView2"
-        android:text="ciao" />
+        android:layout_toEndOf="@+id/articolo"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="#000000" />
 
 </RelativeLayout>

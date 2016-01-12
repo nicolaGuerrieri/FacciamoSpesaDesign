@@ -41,7 +41,7 @@ public class ListeSpesaFragment extends Fragment {
 
     SQLiteDatabase sampleDB = null;
     ListView listView = null;
-    List<Lista> results = new ArrayList<Lista>();
+    List<Lista> results = null;
     ListeAdapter adapter = null;
 
     public static ListeSpesaFragment newInstance(String param1, String param2) {
@@ -70,9 +70,8 @@ public class ListeSpesaFragment extends Fragment {
         final EditText nomeLista = (EditText) view.findViewById(R.id.nuovaLista);
 
         listView = (ListView) view.findViewById(R.id.listeSpesa);
-
         sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
-
+        results = new ArrayList<Lista>();
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         Cursor risultato = null;
 
@@ -143,10 +142,10 @@ public class ListeSpesaFragment extends Fragment {
                 args.putLong("idLista", lista.getIdCarta());
                 args.putBoolean("crea", true);
                 // nomeLista.setText("");
-                ((MainActivity) getActivity()).goToFragmentMenu(0, args);
+                ((MainActivity) getActivity()).goToFragmentMenu(0, args, true);
                 //uso id carta per pigrizia
-              /**  Toast.makeText(getActivity(), "" + lista.getIdCarta(), Toast.LENGTH_LONG).show();
-                listView.setItemChecked(position, false);**/
+                /**  Toast.makeText(getActivity(), "" + lista.getIdCarta(), Toast.LENGTH_LONG).show();
+                 listView.setItemChecked(position, false);**/
             }
         });
 

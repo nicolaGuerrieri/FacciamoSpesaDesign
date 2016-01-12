@@ -63,10 +63,15 @@ public final class Costanti {
             + Costanti.COLUMN_NAME_ID_LISTA + ") REFERENCES " + Costanti.TABLE_NAME_LISTA + "(" + Costanti.COLUMN_NAME_ID + "),  FOREIGN KEY ("
             + Costanti.COLUMN_NAME_ID_ARTICOLO + ") REFERENCES " + Costanti.TABLE_NAME_ARTICOLO + "(" + Costanti.COLUMN_NAME_ID + "));";
 
-    public static final String QUERY_JOIN_LISTA_ARTICOL = "select " + TABLE_NAME_ARTICOLO + "." + COLUMN_NAME_NOME_ARTICOLO + " from " + TABLE_NAME_LISTA_ARTICOLO + " join " + TABLE_NAME_ARTICOLO + " on ("
+    public static final String QUERY_JOIN_LISTA_ARTICOL = "select * from " + TABLE_NAME_LISTA_ARTICOLO + " join " + TABLE_NAME_ARTICOLO + " on ("
             + TABLE_NAME_LISTA_ARTICOLO + "." + COLUMN_NAME_ID_ARTICOLO + "=" + TABLE_NAME_ARTICOLO + "." + COLUMN_NAME_ID + ") where "
             + TABLE_NAME_LISTA_ARTICOLO + "." + COLUMN_NAME_ID_LISTA + " = ?;";
+
+
     public static final String QUERY_JOIN_LISTA_ARTICOLO = "select * from " + TABLE_NAME_LISTA_ARTICOLO + " join " + TABLE_NAME_ARTICOLO + " on ("
             + TABLE_NAME_LISTA_ARTICOLO + "." + COLUMN_NAME_ID_ARTICOLO + "=" + TABLE_NAME_ARTICOLO + "." + COLUMN_NAME_ID + ") where "
             + TABLE_NAME_LISTA_ARTICOLO + "." + COLUMN_NAME_ID_LISTA + " =";
+
+    public static final String QUERY_CERCA_ARTICOLO = "SELECT " + Costanti.TABLE_NAME_ARTICOLO + "." + Costanti.COLUMN_NAME_ID + " FROM " + Costanti.TABLE_NAME_ARTICOLO + " where " + Costanti.TABLE_NAME_ARTICOLO + "." +Costanti.COLUMN_NAME_NOME_ARTICOLO + " = ?;";
+
 }

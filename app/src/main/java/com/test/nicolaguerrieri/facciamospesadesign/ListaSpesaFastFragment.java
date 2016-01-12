@@ -1,7 +1,9 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -30,7 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.test.nicolaguerrieri.facciamospesadesign.adapter.ListProdottiAdapter;
+import com.test.nicolaguerrieri.facciamospesadesign.adapter.ListaArticoliListaAdapter;
+import com.test.nicolaguerrieri.facciamospesadesign.model.ArticoloCustom;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +60,11 @@ public class ListaSpesaFastFragment extends Fragment {
 
     ListView listView = null;
     List<String> results = new ArrayList<String>();
+    List<String> tuttiArticoli = new ArrayList<String>();
+    List<ArticoloCustom> resultsArticoli = new ArrayList<ArticoloCustom>();
 
     ListProdottiAdapter adapter = null;
+    ListaArticoliListaAdapter adapterArticoli = null;
     EditText quantita = null;
     AutoCompleteTextView nuovoProdotto = null;
 
@@ -122,6 +131,7 @@ public class ListaSpesaFastFragment extends Fragment {
         nuovoProdotto = (AutoCompleteTextView) vistaReturn.findViewById(R.id.nuovoProdotto);
         nuovoProdotto.setThreshold(1);
         sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
+        tuttiArticoli = new ArrayList<String>();
 
 
         //mette tutto in basso
@@ -148,13 +158,10 @@ public class ListaSpesaFastFragment extends Fragment {
                     sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
                     sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);
 
-                    Log.d("query ", Costanti.QUERY_JOIN_LISTA_ARTICOLO);
+                    Log.d("query ", Costanti.QUERY_JOIN_LISTA_ARTICOL);
                     //    String queryInsert = "INSERT INTO " + Costanti.TABLE_NAME_LISTA + "(" + Costanti.COLUMN_NAME_NOME_LISTA + ") values (?)";
 
-
-                    String eseguimi = Costanti.QUERY_JOIN_LISTA_ARTICOLO + idLista + ";";
                     risultato = sampleDB.rawQuery(Costanti.QUERY_JOIN_LISTA_ARTICOL, new String[]{String.valueOf(idLista)});
-
 
                     Log.d(METHOD_NAME, "risultato: " + risultato);
                     if (risultato.getCount() > 0) {
@@ -162,12 +169,14 @@ public class ListaSpesaFastFragment extends Fragment {
 
                         if (risultato.moveToNext()) {
                             do {
-                                Log.d(METHOD_NAME, "prodotto: " + risultato);
-                                String prodotto = risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_NOME_ARTICOLO));
-                                Log.d(METHOD_NAME, "prodotto: " + prodotto);
-                                results.add(prodotto);
-                                Log.d(METHOD_NAME, "risultato presente ");
 
+                                ArticoloCustom articoloCustom = new ArticoloCustom();
+                                articoloCustom.setArticolo(risultato.getString(risultato.getColumnIndex(Costanti.COLUMN_NAME_NOME_ARTICOLO)));
+                                articoloCustom.setQuantita(risultato.getInt(risultato.getColumnIndex(Costanti.COLUMN_NAME_QUANTITA)));
+                                articoloCustom.setIdListaArticolo(risultato.getLong(risultato.getColumnIndex(Costanti.COLUMN_NAME_ID)));
+
+
+                                resultsArticoli.add(articoloCustom);
                             } while (risultato.moveToNext()); //Move to next row
                         }
                     }
@@ -185,17 +194,25 @@ public class ListaSpesaFastFragment extends Fragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    final String item = (String) parent.getItemAtPosition(position);
+                    final ArticoloCustom item = (ArticoloCustom) parent.getItemAtPosition(position);
                     Log.d(METHOD_NAME, "item: " + item);
 
-                    sampleDB.execSQL("DELETE FROM " + Costanti.TABLE_NAME_ARTICOLO + " WHERE " + Costanti.COLUMN_NAME_NOME_ARTICOLO + "='" + item + "'");
-                    Log.d(METHOD_NAME, "eliminato: " + item);
-                    results.remove(position);
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), item + " eliminato...", Toast.LENGTH_LONG).show();
+                    sampleDB.execSQL("DELETE FROM " + Costanti.TABLE_NAME_LISTA_ARTICOLO + " WHERE " + Costanti.COLUMN_NAME_ID_ARTICOLO + "='" + item.getIdListaArticolo() + "'");
+                    Log.d(METHOD_NAME, "eliminato: " + item.getArticolo());
+                    resultsArticoli.remove(position);
+                    adapterArticoli.notifyDataSetChanged();
+                    Toast.makeText(getActivity(), item.getArticolo() + " eliminato...", Toast.LENGTH_LONG).show();
                     return false;
                 }
             });
+
+            adapterArticoli = new ListaArticoliListaAdapter(getActivity(), resultsArticoli);
+            if (listView != null) {
+                listView.setAdapter(adapterArticoli);
+                Log.d(METHOD_NAME, "aggiunto adapter");
+            }
+
+
         } else {
 
             nuovoProdotto.setWidth(245);
@@ -245,15 +262,28 @@ public class ListaSpesaFastFragment extends Fragment {
                     addProduct(v);
                 }
             });
+            adapter = new ListProdottiAdapter(getActivity(), R.layout.item_custom, results);
+            if (listView != null) {
+                listView.setAdapter(adapter);
+                Log.d(METHOD_NAME, "aggiunto adapter");
+            }
         }
 
-        adapter = new ListProdottiAdapter(getActivity(), R.layout.item_custom, results);
-        if (listView != null) {
-            listView.setAdapter(adapter);
-            Log.d(METHOD_NAME, "aggiunto adapter");
-        }
+        //suggerimenti per le liste
+        Cursor risultatoSuggest = sampleDB.rawQuery("SELECT " + Costanti.COLUMN_NAME_NOME_ARTICOLO + " FROM " + Costanti.TABLE_NAME_ARTICOLO + ";", null);
+        Log.d(METHOD_NAME, "risultato: " + risultato);
+        if (risultatoSuggest.getCount() > 0) {
+            Log.d(METHOD_NAME, "risultato presente ");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, results);
+            if (risultatoSuggest.moveToNext()) {
+                do {
+                    String prodotto = risultatoSuggest.getString(risultatoSuggest.getColumnIndex(Costanti.COLUMN_NAME_NOME_ARTICOLO));
+                    Log.d(METHOD_NAME, "prodotto: " + prodotto);
+                    tuttiArticoli.add(prodotto);
+                } while (risultatoSuggest.moveToNext()); //Move to next row
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, tuttiArticoli);
         nuovoProdotto.setAdapter(adapter);
 
         return vistaReturn;
@@ -277,8 +307,13 @@ public class ListaSpesaFastFragment extends Fragment {
         }
         try {
 
-            //TODO verifica duplicati
-
+            //verifica duplicati
+            for (String prodotto : results) {
+                if (prodotto.equalsIgnoreCase(nuovoProdotto.getText().toString())) {
+                    apriDialogGenerica("Attenzione", "Prodotto già presente", "Ok");
+                    return;
+                }
+            }
             sampleDB.execSQL("INSERT INTO " + Costanti.TABLE_NAME_PRODOTTI + "(" + Costanti.COLUMN_NAME_PRODOTTO + ") values ('" + nuovoProdotto.getText() + "');");
             Toast.makeText(getActivity(), nuovoProdotto.getText() + " aggiunta", Toast.LENGTH_LONG).show();
             nuovoProdotto.setText("");
@@ -291,17 +326,32 @@ public class ListaSpesaFastFragment extends Fragment {
 
     }
 
+
+    public void apriDialogGenerica(String textAlertTitolo, String textAlert, String textBottone) {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create(); //Read Update
+        alertDialog.setTitle(textAlertTitolo);
+        alertDialog.setMessage(textAlert);
+
+        alertDialog.setButton(textBottone, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
+    }
+
     public void addProductLista(View view) {
         final String METHOD_NAME = ".addProduct() >>>> ";
         Log.d(METHOD_NAME, "start");
-        EditText nuovoProdotto = (EditText) getActivity().findViewById(R.id.nuovoProdotto);
 
-        Log.d(METHOD_NAME, "nuovoProdotto: " + nuovoProdotto.getText());
-        String prodottoAggiunto = nuovoProdotto.getText().toString();
-        if (prodottoAggiunto.equals("")) {
+        if (StringUtils.isBlank(nuovoProdotto.getText())) {
             Toast.makeText(getActivity(), "Inserire un prodotto", Toast.LENGTH_LONG).show();
             return;
         }
+        Log.d(METHOD_NAME, "nuovoProdotto: " + nuovoProdotto.getText());
+        ArticoloCustom prodottoAggiunto = new ArticoloCustom();
+
         try {
             if (idLista == -1) {
                 //crea lista se non presente
@@ -312,15 +362,44 @@ public class ListaSpesaFastFragment extends Fragment {
 
                 idLista = insertStmt.executeInsert();
                 Toast.makeText(getActivity(), idLista + " idLista", Toast.LENGTH_LONG).show();
+            } else {
+                // controllo duplicato nella lista
+                for (ArticoloCustom prodottoPresente : resultsArticoli) {
+                    if (nuovoProdotto.getText().toString().equalsIgnoreCase(prodottoPresente.getArticolo())) {
+                        apriDialogGenerica("Attenzione", "Prodotto già presente", "Ok");
+                        return;
+                    }
+                }
             }
 
-            //inserisco articolo
-            String insertArticolo = "INSERT INTO " + Costanti.TABLE_NAME_ARTICOLO + "(" + Costanti.COLUMN_NAME_NOME_ARTICOLO + ") values (?);";
-            SQLiteStatement insertStmtArt = sampleDB.compileStatement(insertArticolo);
-            insertStmtArt.clearBindings();
-            insertStmtArt.bindString(1, nuovoProdotto.getText().toString());
-            Long idArticolo = insertStmtArt.executeInsert();
+            boolean giaPresente = false;
+            Long idArticolo = null;
+            for (String prodottoPresente : tuttiArticoli) {
+                if (nuovoProdotto.getText().toString().equalsIgnoreCase(prodottoPresente)) {
+                    giaPresente = true;
+                }
+            }
 
+
+            if (giaPresente) {
+                Cursor risultatoSuggest = sampleDB.rawQuery(Costanti.QUERY_CERCA_ARTICOLO, new String[]{nuovoProdotto.getText().toString()});
+                if (risultatoSuggest.getCount() > 0) {
+                    Log.d(METHOD_NAME, "risultato presente ");
+                    if (risultatoSuggest.moveToNext()) {
+                        do {
+                            idArticolo = risultatoSuggest.getLong(risultatoSuggest.getColumnIndex(Costanti.COLUMN_NAME_ID));
+                        } while (risultatoSuggest.moveToNext()); //Move to next row
+                    }
+                }
+            } else {
+                //inserisco articolo
+                String insertArticolo = "INSERT INTO " + Costanti.TABLE_NAME_ARTICOLO + "(" + Costanti.COLUMN_NAME_NOME_ARTICOLO + ") values (?);";
+                SQLiteStatement insertStmtArt = sampleDB.compileStatement(insertArticolo);
+                insertStmtArt.clearBindings();
+                insertStmtArt.bindString(1, nuovoProdotto.getText().toString());
+                idArticolo = insertStmtArt.executeInsert();
+            }
+            // inserisco in tabella di raccordo
             String insertListaArticolo = "INSERT INTO " + Costanti.TABLE_NAME_LISTA_ARTICOLO + "(" + Costanti.COLUMN_NAME_ID_LISTA + ", " + Costanti.COLUMN_NAME_ID_ARTICOLO + " , " + Costanti.COLUMN_NAME_QUANTITA + " )" +
                     " values (?, ?, ?);";
             SQLiteStatement insertStmt = sampleDB.compileStatement(insertListaArticolo);
@@ -331,10 +410,17 @@ public class ListaSpesaFastFragment extends Fragment {
 
             Long idJoinTable = insertStmt.executeInsert();
 
+
+            prodottoAggiunto.setArticolo(nuovoProdotto.getText().toString());
+            prodottoAggiunto.setQuantita(Integer.parseInt(quantita.getText().toString()));
+            prodottoAggiunto.setIdListaArticolo(idLista);
+            adapterArticoli.add(prodottoAggiunto);
+
             Toast.makeText(getActivity(), idJoinTable + " aggiunta", Toast.LENGTH_LONG).show();
             nuovoProdotto.setText("");
+            quantita.setText("1");
             Log.d(METHOD_NAME, "aggiunto prodotto");
-            adapter.add(prodottoAggiunto);
+
         } catch (SQLException sqE) {
             Log.e(METHOD_NAME, "sqE: " + sqE);
             Toast.makeText(getActivity(), "Salvataggio non eseguito", Toast.LENGTH_LONG).show();

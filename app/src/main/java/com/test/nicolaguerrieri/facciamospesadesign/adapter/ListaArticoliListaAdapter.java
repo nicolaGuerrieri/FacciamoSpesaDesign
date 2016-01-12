@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.test.nicolaguerrieri.facciamospesadesign.R;
-import com.test.nicolaguerrieri.facciamospesadesign.model.Lista;
-import com.test.nicolaguerrieri.facciamospesadesign.model.ViewHolder;
+import com.test.nicolaguerrieri.facciamospesadesign.model.ArticoloCustom;
+import com.test.nicolaguerrieri.facciamospesadesign.model.ArticoloCustomHolder;
 
 import java.util.List;
 
@@ -18,27 +18,32 @@ import java.util.List;
  */
 public class ListaArticoliListaAdapter extends BaseAdapter {
 
-    private List<Lista> listaListe;
+    private List<ArticoloCustom> listaArticoli;
     private Context context;
 
-    public ListaArticoliListaAdapter(Context context, List<Lista> listaListe) {
+    public ListaArticoliListaAdapter(Context context, List<ArticoloCustom> listaArticoli) {
         this.context = context;
-        this.listaListe = listaListe;
+        this.listaArticoli = listaArticoli;
     }
 
     @Override
     public int getCount() {
-        return listaListe.size();
+        return listaArticoli.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listaListe.get(position);
+        return listaArticoli.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return 0;
+    }
+
+    public void add(ArticoloCustom art) {
+        listaArticoli.add(art);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,7 +54,7 @@ public class ListaArticoliListaAdapter extends BaseAdapter {
         //indica una row
         View gridView;
 
-        ViewHolder holderTag = null;
+        ArticoloCustomHolder holderTag = null;
         //se la view che mi stai passando è null io la creo altrimenti riutilizzo
         //Il primo quando il convertView è uguale a null, quindi ci troviamo al primo elemento della lista
         if (convertView == null) {
@@ -57,21 +62,23 @@ public class ListaArticoliListaAdapter extends BaseAdapter {
             convertView = new View(context);
 
             // attraverso l'inflater io ti dico, con un xml, come deve essere sta view
-            convertView = inflater.inflate(R.layout.fragment_item_list, null);
+            convertView = inflater.inflate(R.layout.item_lista_articolo, null);
 
             //creo un holder per settare dentro i componenti, al primo giro quando è null il convert view
-            holderTag = new ViewHolder();
-            holderTag.setTextView((TextView) convertView.findViewById(R.id.nomeLista));
+            holderTag = new ArticoloCustomHolder();
+            holderTag.setArticolo((TextView) convertView.findViewById(R.id.articolo));
+            holderTag.setQuantita((TextView) convertView.findViewById(R.id.numeroPezzi));
+
             convertView.setTag(holderTag);
         } else {
-            holderTag = (ViewHolder) convertView.getTag();
+            holderTag = (ArticoloCustomHolder) convertView.getTag();
         }
 
-        Lista lista = listaListe.get(position);
+        ArticoloCustom articoloLista = listaArticoli.get(position);
+        holderTag.getArticolo().setText(articoloLista.getArticolo());
+        holderTag.getQuantita().setText("" + articoloLista.getQuantita());
 
-        holderTag.getTextView().setText(lista.getNomeLista());
-
-        holderTag.setIdCarta(lista.getId());
+        holderTag.setIdListaArticolo(articoloLista.getIdListaArticolo());
 
         return convertView;
     }

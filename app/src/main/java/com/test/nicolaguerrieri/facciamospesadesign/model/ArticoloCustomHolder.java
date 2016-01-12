@@ -1,28 +1,30 @@
 package com.test.nicolaguerrieri.facciamospesadesign.model;
 
+import android.widget.TextView;
+
 /**
  * Created by nicola.guerrieri2 on 02/12/2015.
  */
-public class ArticoloCustom {
-    private String articolo;
-    private int quantita;
+public class ArticoloCustomHolder {
+    private TextView articolo;
+    private TextView quantita;
 
     private long idLista;
     private long idListaArticolo;
 
-    public String getArticolo() {
+    public TextView getArticolo() {
         return articolo;
     }
 
-    public void setArticolo(String articolo) {
+    public void setArticolo(TextView articolo) {
         this.articolo = articolo;
     }
 
-    public int getQuantita() {
+    public TextView getQuantita() {
         return quantita;
     }
 
-    public void setQuantita(int quantita) {
+    public void setQuantita(TextView quantita) {
         this.quantita = quantita;
     }
 

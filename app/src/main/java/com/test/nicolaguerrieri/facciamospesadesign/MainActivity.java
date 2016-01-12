@@ -97,8 +97,11 @@ public class MainActivity extends AppCompatActivity
      * public static  final int VIEW_CARTA_FRAGMENT= 3;
      * public static  final int SCAN_CARTA_FRAGMENT= 4;
      **/
-
     public void goToFragmentMenu(int position, Bundle bundleArgument) {
+        goToFragmentMenu(position, bundleArgument, false);
+    }
+
+    public void goToFragmentMenu(int position, Bundle bundleArgument, boolean mantieniStato) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
@@ -128,7 +131,11 @@ public class MainActivity extends AppCompatActivity
         // addToBackStack(null).
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right_);
-        fragmentTransaction.replace(R.id.container, fragment).commitAllowingStateLoss();
+        if (mantieniStato) {
+            fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null).commitAllowingStateLoss();
+        } else {
+            fragmentTransaction.replace(R.id.container, fragment).commitAllowingStateLoss();
+        }
 
         if (bundleArgument.getBoolean("crea", false)) {
             onSectionAttached(position + 1, bundleArgument.getString("nomeLista"));
@@ -284,6 +291,9 @@ public class MainActivity extends AppCompatActivity
 
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             getSupportFragmentManager().popBackStack();
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right_);
         } else {
             //super.onBackPressed();
 
@@ -293,11 +303,8 @@ public class MainActivity extends AppCompatActivity
 
                         // do something when the button is clicked
                         public void onClick(DialogInterface arg0, int arg1) {
-
                             finish();
                             //close();
-
-
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
