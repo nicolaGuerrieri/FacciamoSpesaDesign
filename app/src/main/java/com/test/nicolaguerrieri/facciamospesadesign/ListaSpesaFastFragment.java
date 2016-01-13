@@ -3,6 +3,7 @@ package com.test.nicolaguerrieri.facciamospesadesign;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,12 +14,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -40,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -50,13 +54,12 @@ import java.util.List;
  * Use the {@link ListaSpesaFastFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListaSpesaFastFragment extends Fragment {
+
+
+public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceFragment {
 
 
     SQLiteDatabase sampleDB = null;
-
-
-    private boolean fromWizard = false;
 
     ListView listView = null;
     List<String> results = new ArrayList<String>();
@@ -105,6 +108,10 @@ public class ListaSpesaFastFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+
+        ((MainActivity) getActivity()).setFragmentSpesa(this);
+
+
         idLista = null;
         if (getArguments() != null) {
             nomeLista = getArguments().getString("nomeLista", null);
@@ -118,10 +125,15 @@ public class ListaSpesaFastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View vistaReturn = null;
 
-        View vistaReturn = inflater.inflate(R.layout.fragment_lista_spesa, container, false);
+        if (crea) {
+            vistaReturn = inflater.inflate(R.layout.fragment_lista_spesa_lista, container, false);
+        } else {
+            vistaReturn = inflater.inflate(R.layout.fragment_lista_spesa, container, false);
+        }
 
-        Button button = (Button) vistaReturn.findViewById(R.id.aggiungi);
+        final Button button = (Button) vistaReturn.findViewById(R.id.aggiungi);
         final String METHOD_NAME = ".onCreate() >>>> ";
         Log.d(METHOD_NAME, "start");
 
@@ -133,6 +145,21 @@ public class ListaSpesaFastFragment extends Fragment {
         sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
         tuttiArticoli = new ArrayList<String>();
 
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == button) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
+                return false;
+            }
+        });
 
         //mette tutto in basso
         /**      listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
@@ -147,8 +174,7 @@ public class ListaSpesaFastFragment extends Fragment {
             // DROPPA TUTTO
             /**sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_ARTICOLO);
              sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA);
-             sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO);**/
-
+             sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO); **/
 
             if (sampleDB != null) {
                 Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.TABLE_NAME_ARTICOLO + "' and type='table'", null);
@@ -216,7 +242,7 @@ public class ListaSpesaFastFragment extends Fragment {
         } else {
 
             nuovoProdotto.setWidth(245);
-            quantita.setVisibility(View.INVISIBLE);
+
             if (sampleDB != null) {
                 Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.TABLE_NAME_PRODOTTI + "' and type='table'", null);
                 Log.d(METHOD_NAME, "tableExist: " + tableExist);
@@ -291,7 +317,12 @@ public class ListaSpesaFastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_lista_spesa, menu);
+
+        if (crea) {
+            inflater.inflate(R.menu.menu_lista_spesa_back, menu);
+        } else {
+            inflater.inflate(R.menu.menu_lista_spesa, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -452,6 +483,11 @@ public class ListaSpesaFastFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void prendiParola(String parola) {
+        Log.d("Stringami", "");
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -532,10 +568,29 @@ public class ListaSpesaFastFragment extends Fragment {
             });
 
             dialog.show();
+        } else if (id == R.id.action_back) {
+            //  ((MainActivity) getActivity()).goToFragmentMenu(1, null);
+
+            promptSpeechInput();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say something");
+        try {
+            startActivityForResult(intent, 500);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getActivity(), "Non supporato",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     public void apriAltraDialog(String testoPass, int step) {
 // apriamo dialog per spiegare
@@ -618,11 +673,18 @@ public class ListaSpesaFastFragment extends Fragment {
         Log.d(METHOD_NAME, "start");
         boolean prodottoPresente = false;
         String textToSend = "Lista della spesa: \n";
-        for (String prodotto : getAllProducts()) {
-            textToSend += "- " + prodotto + "\n";
-            prodottoPresente = true;
-        }
 
+        if (crea) {
+            for (ArticoloCustom prodotto : resultsArticoli) {
+                textToSend += "- " + prodotto.getArticolo() + "\n";
+                prodottoPresente = true;
+            }
+        } else {
+            for (String prodotto : results) {
+                textToSend += "- " + prodotto + "\n";
+                prodottoPresente = true;
+            }
+        }
         Log.d(METHOD_NAME, textToSend);
         Intent waIntent = new Intent(Intent.ACTION_SEND);
         waIntent.setType("text/plain");

@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -91,7 +91,24 @@ public class ScanResultFragment extends Fragment {
         ImageView iw = (ImageView) view.findViewById(R.id.scanResult);
         TextView textCodice = (TextView) view.findViewById(R.id.textCodiceScan);
         final Spinner spinner = (Spinner) view.findViewById(R.id.nomeCarta);
-        Button buttonSave = (Button) view.findViewById(R.id.salvaImage);
+        final Button buttonSave = (Button) view.findViewById(R.id.salvaImage);
+
+        buttonSave.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == buttonSave) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
+
+                return false;
+            }
+        });
+
 
         try {
             if (codice != null) {
@@ -176,7 +193,7 @@ public class ScanResultFragment extends Fragment {
             insertStmt.bindString(3, carta.getLogo());
             insertStmt.bindString(4, carta.getCodice());
             Long idCarta = insertStmt.executeInsert();
-           // Log.d(METHOD_NAME, "queryInsert: " + queryInsert);
+            // Log.d(METHOD_NAME, "queryInsert: " + queryInsert);
 
 
 //            sampleDB.execSQL(queryInsert);

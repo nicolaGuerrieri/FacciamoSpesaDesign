@@ -46,4 +46,7 @@
         <item>meta</item>
         <item>arcaplanet</item>
     </string-array>
+    <string name="title_activity_widget">WidgetActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

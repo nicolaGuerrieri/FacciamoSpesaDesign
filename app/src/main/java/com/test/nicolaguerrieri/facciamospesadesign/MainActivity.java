@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,9 +26,13 @@ import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
         implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener {
 
+
+    private ListaSpesaFastFragment fragmentSpesa = null;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    public float schermoLum = 0F;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    public ListaSpesaFastFragment getFragmentSpesa() {
+        return fragmentSpesa;
+    }
+
+    public void setFragmentSpesa(ListaSpesaFastFragment fragmentSpesa) {
+        this.fragmentSpesa = fragmentSpesa;
+    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -76,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, position);
         fragment.setArguments(args);
+
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         // PER ELIMINARE IL COMPORTAMENTO PER CUI IL TASTO INDIETRO PORTA AL FRAGMENT PRECEDENTE BASTA RIMUOVERE
         // addToBackStack(null).
@@ -109,12 +123,15 @@ public class MainActivity extends AppCompatActivity
             default:
             case Costanti.LISTA_FRAGMENT:
                 fragment = new ListaSpesaFastFragment().newInstance("", "");
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 break;
             case Costanti.LISTE_SPESA_FRAGMENT:
                 fragment = new ListeSpesaFragment().newInstance("", "");
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 break;
             case Costanti.CARTE_FRAGMENT:
                 fragment = new CarteFragment().newInstance("", "");
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 break;
             case Costanti.VIEW_CARTA_FRAGMENT:
                 fragment = new CarteViewFragment().newInstance("", "");
@@ -320,35 +337,61 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         final String METHOD_NAME = ".modificaComponente() ";
         Log.d(METHOD_NAME, "invocata onActivityResult");
-        if (requestCode == 18) {
-//            if(resultCode == 0) {
-/*            Intent intentCarte = new Intent(getActivity(), CarteActivity.class);
-            this.finish();
-            startActivity(intentCarte);*/
-//            }
-        } else {
 
-            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-            Fragment fragment = null;
-            if (scanResult != null) {
-                if (scanResult.getContents() != null) {
-                    /** fragment = new ScanResultFragment().newInstance("", "");
-                     fragment.setArguments(args);
-                     getSupportFragmentManager().beginTransaction()
-                     .replace(R.id.container, fragment).commitAllowingStateLoss();**/
-                    Bundle args = new Bundle();
-                    args.putInt(ARG_SECTION_NUMBER, 1);
-                    args.putString("codice", scanResult.getContents());
-                    goToFragmentMenu(4, args);
-                } else {
-                    //abortito chiamata
-                    onNavigationDrawerItemSelected(2);
+        switch (requestCode) {
+            case 500: {
+                Log.d("","" + resultCode);
+                if (resultCode == RESULT_OK && null != intent) {
+
+                    ArrayList<String> result = intent
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                    if (getFragmentSpesa() != null) {
+                        getFragmentSpesa().prendiParola(result.get(0));
+                    }
+                    /** android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create(); //Read Update
+                     alertDialog.setTitle(result.get(0));
+                     alertDialog.setMessage(result.get(0));
+
+                     alertDialog.setButton("Ok ", new DialogInterface.OnClickListener() {
+                     public void onClick(DialogInterface dialog, int which) {
+                     dialog.cancel();
+                     }
+                     });
+
+                     alertDialog.show();
+                     AutoCompleteTextView au = (AutoCompleteTextView) findViewById(R.id.nuovoProdotto);
+                     au.setText(result.get(0));**/
+
+
                 }
+                break;
+            }
+            case 18: {
+                break;
+            }
+            default: {
+                IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+                Fragment fragment = null;
+                if (scanResult != null) {
+                    if (scanResult.getContents() != null) {
+                        /** fragment = new ScanResultFragment().newInstance("", "");
+                         fragment.setArguments(args);
+                         getSupportFragmentManager().beginTransaction()
+                         .replace(R.id.container, fragment).commitAllowingStateLoss();**/
+                        Bundle args = new Bundle();
+                        args.putInt(ARG_SECTION_NUMBER, 1);
+                        args.putString("codice", scanResult.getContents());
+                        goToFragmentMenu(4, args);
+                    } else {
+                        //abortito chiamata
+                        onNavigationDrawerItemSelected(2);
+                    }
 
+                }
+                break;
             }
         }
-
-
         Log.d(METHOD_NAME, "fine");
     }
 
@@ -357,7 +400,6 @@ public class MainActivity extends AppCompatActivity
         outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
         super.onSaveInstanceState(outState);
     }
-}
 
 
 /**
@@ -372,3 +414,6 @@ public class MainActivity extends AppCompatActivity
  * <p/>
  * Then you will be ok on both the phone and tablet.
  **/
+
+
+}

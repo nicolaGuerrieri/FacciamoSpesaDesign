@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -114,7 +115,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
         showResultLista();
 
-        Button buttonScan = (Button) view.findViewById(R.id.scanCarta);
+        final Button buttonScan = (Button) view.findViewById(R.id.scanCarta);
         buttonScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +123,21 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
             }
         });
 
+        buttonScan.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == buttonScan) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
 
+                return false;
+            }
+        });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -190,7 +205,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
     public void showCarta(int idCarta) {
         Bundle args = new Bundle();
         args.putInt("carta", idCarta);
-        ((MainActivity) getActivity()).goToFragmentMenu(3, args);
+        ((MainActivity) getActivity()).goToFragmentMenu(3, args, true);
     }
 
     @Override

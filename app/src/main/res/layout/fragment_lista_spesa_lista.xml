@@ -9,7 +9,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/nuovoProdotto"
-        android:layout_width="200dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/listaSpesa"
@@ -25,7 +25,7 @@
         android:layout_alignBottom="@+id/nuovoProdotto"
         android:layout_alignEnd="@+id/listaSpesa"
         android:layout_gravity="right|top"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="1dp"
         android:background="@drawable/piu_blu" />
 
     <Button
@@ -35,7 +35,7 @@
         android:layout_alignBottom="@+id/nuovoProdotto"
         android:layout_alignEnd="@+id/listaSpesa"
         android:layout_gravity="right|top"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="60dp"
         android:background="@drawable/mic_blu" />
 
     <ListView
@@ -46,4 +46,15 @@
         android:layout_margin="10dp"
         android:layout_marginTop="34dp"
         android:divider="#000000" />
+
+
+    <EditText
+        android:id="@+id/quantita"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/listaSpesa"
+        android:layout_toEndOf="@+id/nuovoProdotto"
+        android:ems="10"
+        android:hint="@string/numero"
+        android:inputType="number" />
 </RelativeLayout>

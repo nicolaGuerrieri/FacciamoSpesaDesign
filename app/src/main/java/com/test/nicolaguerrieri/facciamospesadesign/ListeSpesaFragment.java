@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,7 +67,7 @@ public class ListeSpesaFragment extends Fragment {
                              Bundle savedInstanceState) {
         final String METHOD_NAME = ".onCreateView() >>>> ";
         View view = inflater.inflate(R.layout.fragment_liste_spesa, container, false);
-        Button buttonCrea = (Button) view.findViewById(R.id.creaLista);
+        final Button buttonCrea = (Button) view.findViewById(R.id.creaLista);
         final EditText nomeLista = (EditText) view.findViewById(R.id.nuovaLista);
 
         listView = (ListView) view.findViewById(R.id.listeSpesa);
@@ -123,6 +124,22 @@ public class ListeSpesaFragment extends Fragment {
             }
         });
 
+        buttonCrea.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == buttonCrea) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
+
+                return false;
+            }
+        });
+
         adapter = new ListeAdapter(getActivity(), results);
         if (listView != null) {
             listView.setAdapter(adapter);
@@ -141,11 +158,7 @@ public class ListeSpesaFragment extends Fragment {
                 args.putString("nomeLista", lista.getTextView().getText().toString());
                 args.putLong("idLista", lista.getIdCarta());
                 args.putBoolean("crea", true);
-                // nomeLista.setText("");
                 ((MainActivity) getActivity()).goToFragmentMenu(0, args, true);
-                //uso id carta per pigrizia
-                /**  Toast.makeText(getActivity(), "" + lista.getIdCarta(), Toast.LENGTH_LONG).show();
-                 listView.setItemChecked(position, false);**/
             }
         });
 
@@ -153,14 +166,25 @@ public class ListeSpesaFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+                final Lista lista = (Lista) parent.getItemAtPosition(position);
+                Log.d(METHOD_NAME, "item: " + lista);
 
-                view.setSelected(true);
-                return true;
+                sampleDB.execSQL("DELETE FROM " + Costanti.TABLE_NAME_LISTA + " WHERE " + Costanti.COLUMN_NAME_ID + "='" + lista.getId() + "'");
+                Log.d(METHOD_NAME, "eliminato: " + lista.getNomeLista());
+                results.remove(position);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), "La lista " + lista.getNomeLista() + " è stata eliminata", Toast.LENGTH_LONG).show();
+                return false;
+
             }
         });
 
 
         return view;
+    }
+
+    public void deleteLista() {
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
