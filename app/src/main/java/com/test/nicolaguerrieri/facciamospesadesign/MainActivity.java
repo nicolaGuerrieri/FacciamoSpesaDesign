@@ -339,8 +339,8 @@ public class MainActivity extends AppCompatActivity
         Log.d(METHOD_NAME, "invocata onActivityResult");
 
         switch (requestCode) {
-            case 500: {
-                Log.d("","" + resultCode);
+            case 131572: {
+                Log.d("", "" + resultCode);
                 if (resultCode == RESULT_OK && null != intent) {
 
                     ArrayList<String> result = intent

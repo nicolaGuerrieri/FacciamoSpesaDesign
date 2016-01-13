@@ -486,6 +486,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
     @Override
     public void prendiParola(String parola) {
         Log.d("Stringami", "");
+        nuovoProdotto.setText(parola);
     }
 
     /**
@@ -582,7 +583,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Say something");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Microfono");
         try {
             startActivityForResult(intent, 500);
         } catch (ActivityNotFoundException a) {
