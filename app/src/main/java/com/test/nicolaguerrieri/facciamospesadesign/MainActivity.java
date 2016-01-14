@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener {
+        implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener, PreferenzeFragment.OnFragmentInteractionListener {
 
 
     private ListaSpesaFastFragment fragmentSpesa = null;
@@ -139,10 +140,19 @@ public class MainActivity extends AppCompatActivity
             case Costanti.SCAN_CARTA_FRAGMENT:
                 fragment = new ScanResultFragment().newInstance("", "");
                 break;
+            case Costanti.SETTINGS_FRAGMENT:
+                fragment = new PreferenzeFragment().newInstance("", "");
+                break;
         }
         if (bundleArgument != null) {
             bundleArgument.putInt(ARG_SECTION_NUMBER, position);
             fragment.setArguments(bundleArgument);
+
+        }
+        if (bundleArgument.getBoolean("crea", false)) {
+            onSectionAttached(position + 1, bundleArgument.getString("nomeLista"));
+        } else {
+            onSectionAttached(position + 1);
         }
         // PER ELIMINARE IL COMPORTAMENTO PER CUI IL TASTO INDIETRO PORTA AL FRAGMENT PRECEDENTE BASTA RIMUOVERE
         // addToBackStack(null).
@@ -154,11 +164,7 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.container, fragment).commitAllowingStateLoss();
         }
 
-        if (bundleArgument.getBoolean("crea", false)) {
-            onSectionAttached(position + 1, bundleArgument.getString("nomeLista"));
-        } else {
-            onSectionAttached(position + 1);
-        }
+
         getSupportActionBar().setTitle(mTitle);
     }
 
@@ -218,7 +224,11 @@ public class MainActivity extends AppCompatActivity
             //   restoreActionBar();
             return true;
         }
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_widget, menu);
+        return true;
+
+        //  return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -230,6 +240,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Bundle bundle = new Bundle();
+            goToFragmentMenu(5, bundle, true);
             return true;
         }
 

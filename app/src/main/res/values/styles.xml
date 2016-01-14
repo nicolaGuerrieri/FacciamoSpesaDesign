@@ -9,8 +9,8 @@
         <item name="android:windowContentOverlay">@color/primary</item>
 
         <item name="actionModeStyle">@style/AppBaseThemeMaterial.ActionMode</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
-
 
 
     <style name="AppBaseThemeMaterial.ActionMode" parent="@style/Widget.AppCompat.ActionMode">

@@ -3,12 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
   >
 
-    <item
-        android:id="@+id/action_back"
-        android:orderInCategory="100"
-        android:icon="@drawable/trash"
-        android:title="@string/action_settings"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_share"
         android:orderInCategory="100"

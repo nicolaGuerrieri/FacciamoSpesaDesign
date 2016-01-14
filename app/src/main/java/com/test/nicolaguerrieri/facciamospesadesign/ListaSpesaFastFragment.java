@@ -134,6 +134,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         }
 
         final Button button = (Button) vistaReturn.findViewById(R.id.aggiungi);
+        final Button buttonMic = (Button) vistaReturn.findViewById(R.id.microfono);
         final String METHOD_NAME = ".onCreate() >>>> ";
         Log.d(METHOD_NAME, "start");
 
@@ -160,6 +161,29 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
                 return false;
             }
         });
+        buttonMic.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == buttonMic) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
+                return false;
+            }
+        });
+
+        buttonMic.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
+
 
         //mette tutto in basso
         /**      listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
@@ -569,12 +593,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
             });
 
             dialog.show();
-        } else if (id == R.id.action_back) {
-            //  ((MainActivity) getActivity()).goToFragmentMenu(1, null);
-
-            promptSpeechInput();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

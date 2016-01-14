@@ -39,6 +39,7 @@ public final class Costanti {
     public static final int CARTE_FRAGMENT = 2;
     public static final int VIEW_CARTA_FRAGMENT = 3;
     public static final int SCAN_CARTA_FRAGMENT = 4;
+    public static final int SETTINGS_FRAGMENT = 5;
 
 
     public static final String QUERY_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME_CARTE;

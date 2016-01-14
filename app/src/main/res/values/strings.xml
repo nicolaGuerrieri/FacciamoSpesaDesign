@@ -28,7 +28,7 @@
     <string name="action_new_list">Nuova lista</string>
 
     action_name
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Impostazioni</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
