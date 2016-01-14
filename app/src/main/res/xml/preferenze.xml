@@ -6,11 +6,20 @@
     <PreferenceCategory
         android:summary="Licenze"
         android:title="Licenze">
-
+        <Preference
+            android:id="@+id/licenze"
+            android:key="zxing"
+            android:summary="Zxing"
+            android:title="zxing library" />
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Contatti"
         android:title="Contatti">
+        <Preference
+            android:id="@+id/licenze"
+            android:key="nome"
+            android:summary="guerrierinicola@gmail.com "
+            android:title="Mail" />
 
     </PreferenceCategory>
 </PreferenceScreen>

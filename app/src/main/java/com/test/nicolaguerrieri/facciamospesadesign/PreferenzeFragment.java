@@ -55,12 +55,12 @@ public class PreferenzeFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preferenze);
-        Preference myPref = (Preference) findPreference("licenze");
+  /**      Preference myPref = (Preference) findPreference("licenze");
         myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
               return  true;
             }
-        });
+        });**/
     }
 
 

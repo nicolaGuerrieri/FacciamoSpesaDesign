@@ -31,7 +31,7 @@ repositories {
     }
 }
 dependencies {
-
+    compile 'com.deploygate:sdk:3.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
