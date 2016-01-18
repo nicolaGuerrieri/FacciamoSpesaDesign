@@ -20,6 +20,5 @@
             android:key="nome"
             android:summary="guerrierinicola@gmail.com "
             android:title="Mail" />
-
     </PreferenceCategory>
 </PreferenceScreen>

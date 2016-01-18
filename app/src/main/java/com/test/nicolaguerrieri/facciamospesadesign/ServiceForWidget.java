@@ -1,12 +1,10 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ListView;
 import android.widget.RemoteViewsService;
+
+import java.util.ArrayList;
 
 /**
  * Created by nicola.guerrieri2 on 13/01/2016.
@@ -22,6 +20,7 @@ public class ServiceForWidget extends RemoteViewsService {
         int appWidgetId = intent.getIntExtra(
                 AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
+
 
         return (new ListViewProvider(this.getApplicationContext(), intent));
     }
