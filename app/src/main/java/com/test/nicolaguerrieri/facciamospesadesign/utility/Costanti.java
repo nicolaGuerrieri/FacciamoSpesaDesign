@@ -52,6 +52,7 @@ public final class Costanti {
             + Costanti.COLUMN_NAME_NOME + " VARCHAR not null, " + Costanti.COLUMN_NAME_IMMAGINE + " BLOB not null, " + Costanti.COLUMN_NAME_LOGO + " VARCHAR, "
             + Costanti.COLUMN_NAME_CODICE + " VARCHAR not null);";
 
+    public static final String QUERY_CREATE_PRODOTTI = "CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_PRODOTTI + " (" + Costanti.COLUMN_NAME_PRODOTTO + " VARCHAR);";
 
     public static final String QUERY_CREATE_ARTICOLO = "CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_ARTICOLO + " (" + Costanti.COLUMN_NAME_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + Costanti.COLUMN_NAME_NOME_ARTICOLO + " VARCHAR);";

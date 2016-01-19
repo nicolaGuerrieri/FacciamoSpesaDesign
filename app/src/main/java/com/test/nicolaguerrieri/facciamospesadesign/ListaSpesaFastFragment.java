@@ -200,13 +200,20 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
              sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA);
              sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO); **/
 
+
+            sampleDB.execSQL(Costanti.QUERY_CREATE_ARTICOLO);
+            sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
+            sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);
+            sampleDB.execSQL(Costanti.QUERY_CREATE_PRODOTTI);
+
+
             if (sampleDB != null) {
                 Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.TABLE_NAME_ARTICOLO + "' and type='table'", null);
                 Log.d(METHOD_NAME, "tableExist: " + tableExist);
                 if (tableExist != null) {
-                    sampleDB.execSQL(Costanti.QUERY_CREATE_ARTICOLO);
-                    sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
-                    sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);
+                    /**               sampleDB.execSQL(Costanti.QUERY_CREATE_ARTICOLO);
+                     sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
+                     sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);**/
 
                     Log.d("query ", Costanti.QUERY_JOIN_LISTA_ARTICOL);
                     //    String queryInsert = "INSERT INTO " + Costanti.TABLE_NAME_LISTA + "(" + Costanti.COLUMN_NAME_NOME_LISTA + ") values (?)";
@@ -271,7 +278,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
                 Cursor tableExist = sampleDB.rawQuery("SELECT * from sqlite_master WHERE name ='" + Costanti.TABLE_NAME_PRODOTTI + "' and type='table'", null);
                 Log.d(METHOD_NAME, "tableExist: " + tableExist);
                 if (tableExist != null) {
-                    sampleDB.execSQL("CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_PRODOTTI + " (" + Costanti.COLUMN_NAME_PRODOTTO + " VARCHAR);");
+//                    sampleDB.execSQL("CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_PRODOTTI + " (" + Costanti.COLUMN_NAME_PRODOTTO + " VARCHAR);");
 
 
                     risultato = sampleDB.rawQuery("SELECT " + Costanti.COLUMN_NAME_PRODOTTO + " FROM " + Costanti.TABLE_NAME_PRODOTTI, null);

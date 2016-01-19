@@ -48,21 +48,71 @@ public class PreferenzeFragment extends PreferenceFragmentCompat {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
+
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        addPreferencesFromResource(R.xml.preferenze);
+        addPreferencesFromResource(R.xml.preferenze_header);
   /**      Preference myPref = (Preference) findPreference("licenze");
         myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
               return  true;
             }
         });**/
-    }
+}
 
+
+
+/**
+    01-19 15:06:37.780 5637-5637/? E/SQLiteLog: (1) no such table: ARTICOLO
+    01-19 15:06:37.786 8092-8092/? D/ChimeraCfgMgr: Loading module com.google.android.gms.vision from APK com.google.android.gms
+    01-19 15:06:37.788 5637-5637/? D/AndroidRuntime: Shutting down VM
+    01-19 15:06:37.788 5637-5637/? V/DeployGateUncaughtExceptionHandler: DeployGate caught an exception, trying to send to the service
+    01-19 15:06:37.807 5637-5637/? E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.test.nicolaguerrieri.facciamospesadesign, PID: 5637
+    java.lang.RuntimeException: Unable to start activity ComponentInfo{com.test.nicolaguerrieri.facciamospesadesign/com.test.nicolaguerrieri.facciamospesadesign.MainActivity}: android.database.sqlite.SQLiteException: no such table: ARTICOLO (code 1): , while compiling: SELECT NOME_ARTICOLO FROM ARTICOLO;
+    at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2416)
+    at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476)
+    at android.app.ActivityThread.-wrap11(ActivityThread.java)
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344)
+    at android.os.Handler.dispatchMessage(Handler.java:102)
+    at android.os.Looper.loop(Looper.java:148)
+    at android.app.ActivityThread.main(ActivityThread.java:5417)
+    at java.lang.reflect.Method.invoke(Native Method)
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726)
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616)
+    Caused by: android.database.sqlite.SQLiteException: no such table: ARTICOLO (code 1): , while compiling: SELECT NOME_ARTICOLO FROM ARTICOLO;
+    at android.database.sqlite.SQLiteConnection.nativePrepareStatement(Native Method)
+    at android.database.sqlite.SQLiteConnection.acquirePreparedStatement(SQLiteConnection.java:887)
+    at android.database.sqlite.SQLiteConnection.prepare(SQLiteConnection.java:498)
+    at android.database.sqlite.SQLiteSession.prepare(SQLiteSession.java:588)
+    at android.database.sqlite.SQLiteProgram.<init>(SQLiteProgram.java:58)
+    at android.database.sqlite.SQLiteQuery.<init>(SQLiteQuery.java:37)
+    at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:44)
+    at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1316)
+    at android.database.sqlite.SQLiteDatabase.rawQuery(SQLiteDatabase.java:1255)
+    at com.test.nicolaguerrieri.facciamospesadesign.ListaSpesaFastFragment.onCreateView(ListaSpesaFastFragment.java:323)
+    at android.support.v4.app.Fragment.performCreateView(Fragment.java:1965)
+    at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1078)
+    at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1259)
+    at android.support.v4.app.BackStackRecord.run(BackStackRecord.java:738)
+    at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:1624)
+    at android.support.v4.app.FragmentController.execPendingActions(FragmentController.java:330)
+    at android.support.v4.app.FragmentActivity.onStart(FragmentActivity.java:547)
+    at android.app.Instrumentation.callActivityOnStart(Instrumentation.java:1237)
+    at android.app.Activity.performStart(Activity.java:6268)
+    at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2379)
+    at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2476) 
+    at android.app.ActivityThread.-wrap11(ActivityThread.java) 
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1344) 
+    at android.os.Handler.dispatchMessage(Handler.java:102) 
+    at android.os.Looper.loop(Looper.java:148) 
+    at android.app.ActivityThread.main(ActivityThread.java:5417) 
+    at java.lang.reflect.Method.invoke(Native Method) 
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:726) 
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:616) 
+**/
 
 
     // TODO: Rename method, update argument and hook method into UI event

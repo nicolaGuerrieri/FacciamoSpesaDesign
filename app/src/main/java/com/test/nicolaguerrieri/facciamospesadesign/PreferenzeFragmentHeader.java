@@ -47,15 +47,12 @@ public class PreferenzeFragmentHeader extends PreferenceFragmentCompat {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-
-}
-
+        addPreferencesFromResource(R.xml.preferenze_header);
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
