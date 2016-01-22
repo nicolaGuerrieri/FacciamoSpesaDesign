@@ -13,6 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -44,6 +46,7 @@ import com.test.nicolaguerrieri.facciamospesadesign.utility.JSONParser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -104,25 +107,38 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         // Required empty public constructor
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        JSONParser dd = new JSONParser() {
-            @Override
-            protected void onPostExecute(List<String> result) {
+        if (isNetworkAvailable()) {
+            JSONParser dd = new JSONParser() {
+                @Override
+                protected void onPostExecute(List<String> result) {
 
-                ((MainActivity) getActivity()).setListaNegozi(result);
-            }
-        };
-        dd.execute("http://negozi-negozi.rhcloud.com/");
+                    ((MainActivity) getActivity()).setListaNegozi(result);
+                }
+            };
+            dd.execute("http://negozi-negozi.rhcloud.com/");
 
-
+        } else {
+            int holderint = getResources().getIdentifier("negozi", "array",
+                    getActivity().getPackageName()); // You had used "name"
+            String[] mess = getResources().getStringArray(holderint);
+            ((MainActivity) getActivity()).setListaNegozi(new ArrayList<String>(Arrays.asList(mess)));
+        }
         ((MainActivity) getActivity()).setFragmentSpesa(this);
 
-        List<String> resulte =((MainActivity) getActivity()).getListaNegozi();
+
         idLista = null;
         if (getArguments() != null) {
             nomeLista = getArguments().getString("nomeLista", null);
@@ -155,7 +171,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         nuovoProdotto = (AutoCompleteTextView) vistaReturn.findViewById(R.id.nuovoProdotto);
         nuovoProdotto.setThreshold(1);
         sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
-        creaNegozi();
+        //  creaNegozi();
 
         tuttiArticoli = new ArrayList<String>();
 

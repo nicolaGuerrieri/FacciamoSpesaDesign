@@ -27,8 +27,10 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.test.nicolaguerrieri.facciamospesadesign.model.Carta;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
+import com.test.nicolaguerrieri.facciamospesadesign.utility.JSONParser;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Utility;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,7 +57,7 @@ public class ScanResultFragment extends Fragment {
     private String codice;
     private String mParam2;
 
-    final public List<String> negoziResult = new ArrayList<String>();
+    public List<String> negoziResult = new ArrayList<String>();
 
     Utility utility = new Utility();
     SQLiteDatabase sampleDB = null;
@@ -90,11 +92,7 @@ public class ScanResultFragment extends Fragment {
         if (getArguments() != null) {
             codice = getArguments().getString("codice");
         }
-
-
-
     }
-
 
 
     private void fetch() {
@@ -126,8 +124,25 @@ public class ScanResultFragment extends Fragment {
                 }
         );
         App.getInstance().getRequestQueue().add(request);
+    }
 
+    public void sparaNuovoNegozio(String negozio) {
+        boolean sparare = true;
+        for (String neg : negoziResult) {
+            if (neg.equalsIgnoreCase(negozio)) {
+                sparare = false;
+            }
+        }
+        if (sparare) {
+            JSONParser dd = new JSONParser() {
+                @Override
+                protected void onPostExecute(List<String> result) {
 
+                    ((MainActivity) getActivity()).setListaNegozi(result);
+                }
+            };
+            dd.execute("http://negozi-negozi.rhcloud.com/?negozio=" + negozio);
+        }
     }
 
 
@@ -193,7 +208,7 @@ public class ScanResultFragment extends Fragment {
         });
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -217,9 +232,9 @@ public class ScanResultFragment extends Fragment {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
-        //TODO tiriamo su da chiamata json
-        adapter.addAll(((MainActivity) getActivity()).getListaNegozi());
+        negoziResult = ((MainActivity) getActivity()).getListaNegozi();
+        //tiriamo su da chiamata json
+        adapter.addAll(negoziResult);
         adapter.add("Seleziona un negozio");
 
         spinner.setAdapter(adapter);
@@ -237,11 +252,19 @@ public class ScanResultFragment extends Fragment {
 
                     @Override
                     public void onClick(View v) {
-                        Log.d("stampa spinner :", spinner.getSelectedItem().toString());
-                        final String nomeCarta = spinner.getSelectedItem().toString();
+                        final String nomeCarta;
 
-                        if (nomeCarta.equals("")) {
+                        if (inserisciNome.getVisibility() == View.VISIBLE) {
+                            nomeCarta = inserisciNome.getText().toString();
+                        } else {
+                            nomeCarta = spinner.getSelectedItem().toString();
+                        }
+                        if (StringUtils.isBlank(nomeCarta)) {
                             Toast.makeText(getActivity(), "Inserire nome carta", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (nomeCarta.equalsIgnoreCase("Seleziona un negozio")) {
+                            Toast.makeText(getActivity(), "Selezionare nome carta", Toast.LENGTH_LONG).show();
                             return;
                         }
                         try {
@@ -255,9 +278,9 @@ public class ScanResultFragment extends Fragment {
                             boolean result = saveCarta(carta);
                             if (result) {
                                 Toast.makeText(getActivity(), "Carta salvata correttamente", Toast.LENGTH_LONG).show();
-                                spinner.setSelection(0, true);
-
-
+                                spinner.setSelection(adapter.getCount());
+                                inserisciNome.setText("");
+                                sparaNuovoNegozio(nomeCarta);
                                 goCarte();
                             } else {
                                 Toast.makeText(getActivity(), "Errore salvataggio", Toast.LENGTH_LONG).show();
