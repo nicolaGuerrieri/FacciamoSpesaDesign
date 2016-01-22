@@ -36,7 +36,6 @@
 
 
     <string-array name="negozi">
-        <item></item>
         <item>coop</item>
         <item>despar</item>
         <item>decathlon</item>
@@ -45,6 +44,7 @@
         <item>esselunga</item>
         <item>meta</item>
         <item>arcaplanet</item>
+        <item>Inserisci nome negozio</item>
     </string-array>
     <string name="title_activity_widget">WidgetActivity</string>
 

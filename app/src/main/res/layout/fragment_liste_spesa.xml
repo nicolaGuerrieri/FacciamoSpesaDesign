@@ -8,7 +8,7 @@
         android:id="@+id/nuovaLista"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="45dp"
+        android:layout_marginLeft="42dp"
         android:layout_marginTop="20dp"
         android:hint="@string/liste" />
 
@@ -17,10 +17,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-
         android:layout_toEndOf="@+id/nuovaLista"
         android:background="@drawable/freccia_go" />
-
 
     <ListView
         android:id="@+id/listeSpesa"

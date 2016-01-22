@@ -4,10 +4,10 @@
     android:background="@color/bluScuro"
     android:layout_height="match_parent" >
 <ImageView
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
     android:id="@+id/icona"
-    android:src="@drawable/uno"
+    android:src="@drawable/fs_ico_256x256"
     android:layout_marginTop="40dp"
     android:layout_centerHorizontal="true"
     android:layout_alignParentTop="true"/>

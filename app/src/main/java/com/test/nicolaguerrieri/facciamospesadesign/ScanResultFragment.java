@@ -12,17 +12,29 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.test.nicolaguerrieri.facciamospesadesign.model.Carta;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Utility;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -43,6 +55,7 @@ public class ScanResultFragment extends Fragment {
     private String codice;
     private String mParam2;
 
+    final public List<String> negoziResult = new ArrayList<String>();
 
     Utility utility = new Utility();
     SQLiteDatabase sampleDB = null;
@@ -77,7 +90,46 @@ public class ScanResultFragment extends Fragment {
         if (getArguments() != null) {
             codice = getArguments().getString("codice");
         }
+
+
+
     }
+
+
+
+    private void fetch() {
+
+        JsonObjectRequest request = new JsonObjectRequest("http://negozi-negozi.rhcloud.com/", null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            JSONArray negozi = response.getJSONArray("negozi");
+                            for (int i = 0; i < negozi.length(); i++) {
+                                negoziResult.add(negozi.get(i).toString());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("", response.toString());
+                    }
+                },
+
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("", error.toString());
+                    }
+                }
+        );
+        App.getInstance().getRequestQueue().add(request);
+
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +137,7 @@ public class ScanResultFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_scan_result, container, false);
+        sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
 
 
         Bitmap bitmap = null;
@@ -92,6 +145,8 @@ public class ScanResultFragment extends Fragment {
         TextView textCodice = (TextView) view.findViewById(R.id.textCodiceScan);
         final Spinner spinner = (Spinner) view.findViewById(R.id.nomeCarta);
         final Button buttonSave = (Button) view.findViewById(R.id.salvaImage);
+        final Button buttonModify = (Button) view.findViewById(R.id.inserisciNome);
+        final EditText inserisciNome = (EditText) view.findViewById(R.id.nomeCartaIns);
 
         buttonSave.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -108,7 +163,67 @@ public class ScanResultFragment extends Fragment {
                 return false;
             }
         });
+        buttonModify.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v == buttonSave) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.setAlpha(.5f);
+                    } else {
+                        v.setAlpha(1f);
+                    }
+                    return false;
+                }
 
+                return false;
+            }
+        });
+
+        buttonModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inserisciNome.getVisibility() == View.VISIBLE) {
+                    inserisciNome.setVisibility(View.INVISIBLE);
+                    spinner.setVisibility(View.VISIBLE);
+                } else {
+                    inserisciNome.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        //TODO tiriamo su da chiamata json
+        adapter.addAll(((MainActivity) getActivity()).getListaNegozi());
+        adapter.add("Seleziona un negozio");
+
+        spinner.setAdapter(adapter);
+        spinner.setSelection(adapter.getCount());
 
         try {
             if (codice != null) {
@@ -173,7 +288,6 @@ public class ScanResultFragment extends Fragment {
     public boolean saveCarta(Carta carta) {
         final String METHOD_NAME = ".saveCarta() ";
 
-        sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         if (sampleDB != null) {
 //            sampleDB.execSQL(Costanti.QUERY_DROP);

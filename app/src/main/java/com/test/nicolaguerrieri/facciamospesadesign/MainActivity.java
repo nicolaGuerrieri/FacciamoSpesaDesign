@@ -29,11 +29,21 @@ import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener, PreferenzeFragment.OnFragmentInteractionListener {
 
 
+    public List<String> getListaNegozi() {
+        return listaNegozi;
+    }
+
+    public void setListaNegozi(List<String> listaNegozi) {
+        this.listaNegozi = listaNegozi;
+    }
+
+    public List<String> listaNegozi = new ArrayList<String>();
     private ListaSpesaFastFragment fragmentSpesa = null;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

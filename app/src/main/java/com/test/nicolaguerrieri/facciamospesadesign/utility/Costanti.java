@@ -14,6 +14,10 @@ public final class Costanti {
     public static final String COLUMN_NAME_LOGO = "Logo";
     public static final String COLUMN_NAME_CODICE = "Codice";
 
+    // NEGOZI
+    public static final String TABLE_NAME_NEGOZI = "NEGOZIO";
+    public static final String COLUMN_NAME_NEGOZIO_NOME = "NEGOZIO_NOME";
+
 
     //SPESA FAST
     public static final String TABLE_NAME_PRODOTTI = "Prodotti";
@@ -44,9 +48,13 @@ public final class Costanti {
 
     public static final String QUERY_DROP = "DROP TABLE IF EXISTS " + TABLE_NAME_CARTE;
     public static final String QUERY_DROP_TABLE_NAME_ARTICOLO = "DROP TABLE IF EXISTS " + TABLE_NAME_ARTICOLO;
+    public static final String QUERY_DROP_TABLE_NAME_PRODOTTI = "DROP TABLE IF EXISTS " + TABLE_NAME_PRODOTTI;
     public static final String QUERY_DROP_TABLE_NAME_LISTA = "DROP TABLE IF EXISTS " + TABLE_NAME_LISTA;
     public static final String QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO = "DROP TABLE IF EXISTS " + TABLE_NAME_LISTA_ARTICOLO;
+    public static final String QUERY_DROP_TABLE_NAME_NEGOZI = "DROP TABLE IF EXISTS " + TABLE_NAME_NEGOZI;
 
+    public static final String QUERY_CREATE_NEGOZIO = "CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_NEGOZI + " (" + Costanti.COLUMN_NAME_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+            + Costanti.COLUMN_NAME_NEGOZIO_NOME + " VARCHAR not null);";
 
     public static final String QUERY_CREATE = "CREATE TABLE IF NOT EXISTS " + Costanti.TABLE_NAME_CARTE + " (" + Costanti.COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
             + Costanti.COLUMN_NAME_NOME + " VARCHAR not null, " + Costanti.COLUMN_NAME_IMMAGINE + " BLOB not null, " + Costanti.COLUMN_NAME_LOGO + " VARCHAR, "

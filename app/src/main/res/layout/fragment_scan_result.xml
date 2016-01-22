@@ -25,22 +25,40 @@
 
 
     <Spinner
-        android:layout_width="240dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:id="@+id/nomeCarta"
+        android:layout_marginTop="00dp"
         android:hint="Negozio"
-        android:entries="@array/negozi"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/salvaImage" />
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentTop="@+id/scanResult"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/nomeCartaIns"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:hint="Inserisci nome negozio"
+        android:layout_alignParentTop="@+id/scanResult"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/salvaImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="right|top"
-        android:layout_marginRight="25dp"
+        android:layout_marginRight="55dp"
         android:background="@drawable/piu_blu"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/textCodiceScan" />
+    <Button
+        android:id="@+id/inserisciNome"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right|top"
+        android:background="@drawable/modify_blu"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/textCodiceScan" />
 

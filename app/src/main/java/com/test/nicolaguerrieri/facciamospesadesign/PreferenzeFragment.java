@@ -4,7 +4,6 @@ package com.test.nicolaguerrieri.facciamospesadesign;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 
@@ -32,6 +31,13 @@ public class PreferenzeFragment extends PreferenceFragmentCompat {
         // Required empty public constructor
     }
 
+    @Override
+    protected void onBindPreferences() {
+        super.onBindPreferences();
+
+
+    }
+
     public static PreferenzeFragment newInstance(String param1, String param2) {
         PreferenzeFragment fragment = new PreferenzeFragment();
         Bundle args = new Bundle();
@@ -53,7 +59,7 @@ public class PreferenzeFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        addPreferencesFromResource(R.xml.preferenze_header);
+        addPreferencesFromResource(R.xml.preferenze);
   /**      Preference myPref = (Preference) findPreference("licenze");
         myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {

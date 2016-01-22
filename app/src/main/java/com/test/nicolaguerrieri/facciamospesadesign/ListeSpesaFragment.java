@@ -66,6 +66,8 @@ public class ListeSpesaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final String METHOD_NAME = ".onCreateView() >>>> ";
+
+
         View view = inflater.inflate(R.layout.fragment_liste_spesa, container, false);
         final Button buttonCrea = (Button) view.findViewById(R.id.creaLista);
         final EditText nomeLista = (EditText) view.findViewById(R.id.nuovaLista);

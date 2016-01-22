@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,6 +39,7 @@ import com.test.nicolaguerrieri.facciamospesadesign.adapter.ListProdottiAdapter;
 import com.test.nicolaguerrieri.facciamospesadesign.adapter.ListaArticoliListaAdapter;
 import com.test.nicolaguerrieri.facciamospesadesign.model.ArticoloCustom;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
+import com.test.nicolaguerrieri.facciamospesadesign.utility.JSONParser;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -108,10 +110,19 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        JSONParser dd = new JSONParser() {
+            @Override
+            protected void onPostExecute(List<String> result) {
+
+                ((MainActivity) getActivity()).setListaNegozi(result);
+            }
+        };
+        dd.execute("http://negozi-negozi.rhcloud.com/");
+
 
         ((MainActivity) getActivity()).setFragmentSpesa(this);
 
-
+        List<String> resulte =((MainActivity) getActivity()).getListaNegozi();
         idLista = null;
         if (getArguments() != null) {
             nomeLista = getArguments().getString("nomeLista", null);
@@ -144,6 +155,8 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         nuovoProdotto = (AutoCompleteTextView) vistaReturn.findViewById(R.id.nuovoProdotto);
         nuovoProdotto.setThreshold(1);
         sampleDB = getActivity().openOrCreateDatabase(Costanti.DB_NAME, getActivity().MODE_PRIVATE, null);
+        creaNegozi();
+
         tuttiArticoli = new ArrayList<String>();
 
 
@@ -191,20 +204,21 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
 
         Log.d(METHOD_NAME, "sampleDB:" + sampleDB.getPath());
         Cursor risultato = null;
+
+        // DROPPA TUTTO
+        /**sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_ARTICOLO);
+         sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA);
+         sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO);
+         sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_PRODOTTI); **/
+
+
+        sampleDB.execSQL(Costanti.QUERY_CREATE_ARTICOLO);
+        sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
+        sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);
+        sampleDB.execSQL(Costanti.QUERY_CREATE_PRODOTTI);
         if (crea) {
             Log.d("nome lista " + nomeLista, "");
             quantita.setText("1");
-
-            // DROPPA TUTTO
-            /**sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_ARTICOLO);
-             sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA);
-             sampleDB.execSQL(Costanti.QUERY_DROP_TABLE_NAME_LISTA_ARTICOLO); **/
-
-
-            sampleDB.execSQL(Costanti.QUERY_CREATE_ARTICOLO);
-            sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA);
-            sampleDB.execSQL(Costanti.QUERY_CREATE_LISTA_ARTICOLO);
-            sampleDB.execSQL(Costanti.QUERY_CREATE_PRODOTTI);
 
 
             if (sampleDB != null) {
@@ -533,6 +547,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+
     }
 
 
@@ -739,5 +754,22 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         } else {
             Toast.makeText(getActivity(), "Lista vuota", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void creaNegozi() {
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
+        boolean negoziInseriti = prefs.getBoolean("inseriti", false);
+
+
+        if (!negoziInseriti) {
+            sampleDB.execSQL(Costanti.QUERY_CREATE_NEGOZIO);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("inseriti", true);
+            editor.commit();
+            Log.d("prova inserimento", "saranno inseriti");
+        }
+
+        Log.d("prova inserimento", "saranno inseriti");
     }
 }

@@ -64,4 +64,5 @@ dependencies {
     // NOTE: Do not place your application dependencies here; they belong
     compile 'com.android.support:preference-v7:23.1.0'
     // in the individual module build.gradle files
+    compile 'com.mcxiaoke.volley:library:1.0.+'
 }
