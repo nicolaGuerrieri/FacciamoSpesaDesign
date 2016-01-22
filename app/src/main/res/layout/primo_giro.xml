@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/imageDialog"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/fs_ico_256x256"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:id="@+id/textDialog"
+        android:layout_width="340dp"
+        android:layout_height="200dp"
+        android:text="Scansiona le tue carte fedeltà e portala sempre con te"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_below="@+id/imageDialog"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/dialogButtonOK"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
+        android:layout_marginRight="5dp"
+        android:text="Ok"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/textDialog" />
+
+</RelativeLayout>

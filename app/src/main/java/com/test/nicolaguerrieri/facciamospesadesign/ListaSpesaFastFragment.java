@@ -373,6 +373,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_dropdown_item_1line, tuttiArticoli);
         nuovoProdotto.setAdapter(adapter);
 
+        spiegaUnPo("Benvenuto in Facciamo spesa, l'app pensata per fare spesa e per portare sempre con te le tue fidelity card, ora tu dirai: \n\"Caro Nicola di app così ce ne sono tante perchè scegliere la tua?\"\n\nClicca su NEXT e lo scoprirai...", 1, R.layout.primo_giro, "Next");
         return vistaReturn;
     }
 
@@ -651,7 +652,7 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
 
 
     public void apriAltraDialog(String testoPass, int step) {
-// apriamo dialog per spiegare
+        // apriamo dialog per spiegare
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_custom_spesa);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -772,20 +773,108 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
         }
     }
 
-    public void creaNegozi() {
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
-        boolean negoziInseriti = prefs.getBoolean("inseriti", false);
+    public void spiegaUnPo(String messaggio, int step, int resourseId, String messaggioBottone) {
+
+        // apriamo dialog per spiegare
+        final Dialog dialog = new Dialog(getActivity());
+
+        dialog.setContentView(resourseId);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        ImageView iw = (ImageView) dialog.findViewById(R.id.imageDialog);
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
 
 
-        if (!negoziInseriti) {
-            sampleDB.execSQL(Costanti.QUERY_CREATE_NEGOZIO);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("inseriti", true);
-            editor.commit();
-            Log.d("prova inserimento", "saranno inseriti");
+        Drawable res = null;
+        Integer imageResource = null;
+
+
+        tw.setText(messaggio);
+        // if button is clicked, close the custom dialog
+        dialogButton.setText(messaggioBottone);
+
+        switch (step) {
+            case 0:
+                break;
+            case 1:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        spiegaUnPo("Inserisci i prodotti.\nClicca sul tasto \"Più\" oppure il tasto \"Microfono\" per aggiungerli alla tua lista della spesa", 2, R.layout.dialog_custom, "Next");
+                    }
+                });
+               // imageResource = getActivity().getResources().getIdentifier("@drawable/frecciatrasparente", null, getActivity().getPackageName());
+                break;
+            case 2:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        spiegaUnPo("A", 3, R.layout.dialog_custom_spesa, "Next");
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/frecciatrasparente", null, getActivity().getPackageName());
+
+                break;
+            case 3:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        spiegaUnPo("Seleziona il negozio a cui appartiene la fidelity card", 3, R.layout.dialog_custom, "Next");
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/carta", null, getActivity().getPackageName());
+                break;
+            case 4:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        spiegaUnPo("Clicca sul tasto ''Più'' per aggiungere la carta", 4, R.layout.dialog_custom, "Next");
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/sceglinomecarta", null, getActivity().getPackageName());
+                break;
+            default:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/nomecarta2", null, getActivity().getPackageName());
+                dialogButton.setText("Ok");
+                break;
         }
 
-        Log.d("prova inserimento", "saranno inseriti");
+
+        if (imageResource != null) {
+            res = getActivity().getResources().getDrawable(imageResource);
+            iw.setImageDrawable(res);
+        }
+        dialog.show();
+
+    }
+
+    public void primaSpiegazione() {
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
+        boolean showSpiegazione = prefs.getBoolean("spiegazione", false);
+
+
+        if (!showSpiegazione) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("spiegazione", true);
+            editor.commit();
+            Log.d("prova spiegazione", "spiegazione");
+
+            spiegaUnPo("", 1, R.layout.dialog_custom, "Next");
+        }
+
+        Log.d("prova spiegazione", "spiegazione1 ");
     }
 }

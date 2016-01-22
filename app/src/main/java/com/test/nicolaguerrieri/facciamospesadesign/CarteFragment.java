@@ -378,7 +378,6 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
     public void apriDialogCarte(String messaggio, int step) {
 
-
         // apriamo dialog per spiegare
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_custom);

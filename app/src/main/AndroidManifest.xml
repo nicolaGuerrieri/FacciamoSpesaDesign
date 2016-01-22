@@ -24,7 +24,7 @@
         </activity>
         <receiver
             android:name=".WidgetActivity"
-            android:icon="@drawable/conad"
+            android:icon="@drawable/fs_ico_170x170_tutto"
             android:label="Example Widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
