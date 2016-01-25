@@ -25,6 +25,7 @@ import com.deploygate.sdk.DeployGate;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
+import com.test.nicolaguerrieri.facciamospesadesign.utility.Utility;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,6 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements ActionBar.TabListener, NavigationDrawerFragment.NavigationDrawerCallbacks, WelcomeFragment.OnFragmentInteractionListener, ListaSpesaFastFragment.OnFragmentInteractionListener, CarteFragment.OnFragmentInteractionListener, ScanResultFragment.OnFragmentInteractionListener, CarteViewFragment.OnFragmentInteractionListener, ListeSpesaFragment.OnFragmentInteractionListener, PreferenzeFragment.OnFragmentInteractionListener {
 
+    Utility utility = new Utility();
 
     public List<String> getListaNegozi() {
         return listaNegozi;
@@ -81,6 +83,13 @@ public class MainActivity extends AppCompatActivity
 
     public void setFragmentSpesa(ListaSpesaFastFragment fragmentSpesa) {
         this.fragmentSpesa = fragmentSpesa;
+    }
+
+
+    public void apriHelp() {
+        Log.d("", "");
+        mNavigationDrawerFragment.closeDrawer();
+        utility.spiegaUnPo("Benvenuto in Facciamo spesa, l'app pensata per fare spesa e per portare sempre con te le tue fidelity card, ora tu dirai: \n\"Caro Nicola di app così ce ne sono tante perchè scegliere la tua?\"\n\nClicca su NEXT e lo scoprirai...", 1, R.layout.primo_giro, "Next", this);
     }
 
     @Override

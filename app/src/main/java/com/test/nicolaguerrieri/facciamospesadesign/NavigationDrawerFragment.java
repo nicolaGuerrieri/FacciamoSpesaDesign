@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -96,6 +97,14 @@ public class NavigationDrawerFragment extends Fragment {
         View drawerView = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         //prendo il riferimento e setto l'onclick
+
+        TextView twAiuto = (TextView) drawerView.findViewById(R.id.aiuto);
+        twAiuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).apriHelp();
+            }
+        });
         mDrawerListView = (ListView) drawerView.findViewById(R.id.listMenu);
         mDrawerImageView = (ImageView) drawerView.findViewById(R.id.icona);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,6 +129,10 @@ public class NavigationDrawerFragment extends Fragment {
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 
     /**

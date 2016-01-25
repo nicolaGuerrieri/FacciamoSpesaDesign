@@ -9,12 +9,7 @@
         android:icon="@drawable/share_white"
         android:title="@string/action_settings"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_home"
-        android:orderInCategory="100"
-        android:icon="@drawable/casa2"
-        android:title="@string/action_home"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_info"
         android:orderInCategory="100"

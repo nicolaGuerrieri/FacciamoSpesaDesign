@@ -1,17 +1,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/bluScuro"
-    android:layout_height="match_parent" >
-<ImageView
-    android:layout_width="150dp"
-    android:layout_height="150dp"
-    android:id="@+id/icona"
-    android:src="@drawable/fs_ico_256x256"
-    android:layout_marginTop="40dp"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentTop="true"/>
+    android:layout_height="match_parent"
+    android:background="@color/bluScuro">
 
-    <include layout="@layout/menu"
-/>
+    <ImageView
+        android:id="@+id/icona"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/fs_ico_256x256" />
+
+    <include layout="@layout/menu" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/bluScuro"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/aiuto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"
+
+            android:background="@color/bluScuro"
+            android:text="Aiuto"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
 </RelativeLayout>
