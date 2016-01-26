@@ -126,11 +126,10 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
             JSONParser dd = new JSONParser() {
                 @Override
                 protected void onPostExecute(List<String> result) {
-
                     ((MainActivity) getActivity()).setListaNegozi(result);
                 }
             };
-            dd.execute("http://negozi-negozi.rhcloud.com/");
+            dd.execute("http://riproviamo-negozi.rhcloud.com/");
 
         } else {
             int holderint = getResources().getIdentifier("negozi", "array",

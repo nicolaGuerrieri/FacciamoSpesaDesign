@@ -369,7 +369,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         if (id == R.id.action_info) {
             imageViewNoCarte.setVisibility(View.INVISIBLE);
             noCarteText.setVisibility(View.INVISIBLE);
-            apriDialogCarte("Aggiungi le tue fidelity card, clicca su scan", 1);
+            apriDialogCarte("Attenzione !!! alcuni lettori di codici a barre potrebbero non funzionare con gli schermi degli smartophone, in quanto utilizzano un vecchio sistema di scanner.", 0);
         }
 
         return super.onOptionsItemSelected(item);
@@ -397,6 +397,16 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
         dialogButton.setText("Next");
 
         switch (step) {
+            case 0:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        apriDialogCarte("Aggiungi le tue fidelity card, clicca su scan", 1);
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/information", null, getActivity().getPackageName());
+                break;
             case 1:
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -421,10 +431,20 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        apriDialogCarte("Clicca sul tasto ''Più'' per aggiungere la carta", 4);
+                        apriDialogCarte("O inserisci il negozio cliccando sul tasto \"Matita\"", 4);
                     }
                 });
-                imageResource = getActivity().getResources().getIdentifier("@drawable/sceglinomecarta", null, getActivity().getPackageName());
+                imageResource = getActivity().getResources().getIdentifier("@drawable/selez_nome", null, getActivity().getPackageName());
+                break;
+            case 4:
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        apriDialogCarte("Clicca sul tasto ''Più'' per aggiungere la carta", 5);
+                    }
+                });
+                imageResource = getActivity().getResources().getIdentifier("@drawable/inserisci_nome_carta", null, getActivity().getPackageName());
                 break;
             default:
                 dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -434,7 +454,7 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
                         showResultLista();
                     }
                 });
-                imageResource = getActivity().getResources().getIdentifier("@drawable/nomecarta2", null, getActivity().getPackageName());
+                imageResource = getActivity().getResources().getIdentifier("@drawable/aggiungi_carta", null, getActivity().getPackageName());
                 dialogButton.setText("Ok");
                 break;
         }

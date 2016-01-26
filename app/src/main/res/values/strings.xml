@@ -36,7 +36,7 @@
     <string name="introText">Ciao <br /> prova la mia app, nasce da un\'esigenza personale, attraverso il menu a sinistra scegli la funzione che ti interessa </string>
 
 
-    <string-array name="negozi">
+    <string-array name="negozi2">
         <item>coop</item>
         <item>despar</item>
         <item>decathlon</item>
@@ -51,4 +51,77 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_splash">SplashActivity</string>
+
+
+    <string-array name="negozi">
+        <item>AeO</item>
+        <item>Aci</item>
+        <item>AcquaeSapone</item>
+        <item>Auchan</item>
+        <item>Arcaplanet</item>
+        <item>Autogrill</item>
+        <item>Bata</item>
+        <item>Billa</item>
+        <item>Blocco 31</item>
+        <item>Bottega verde </item>
+        <item>Brico </item>
+        <item>Cad </item>
+        <item>Calliope </item>
+        <item>CalvinKlein </item>
+        <item>Carrefour</item>
+        <item>Cisalfa</item>
+        <item>Coin</item>
+        <item>Comet</item>
+        <item>Conad</item>
+        <item>Conbipel</item>
+        <item>Coop</item>
+        <item>Crai</item>
+        <item>Decathlon</item>
+        <item>Desigual</item>
+        <item>Despar</item>
+        <item>Leclerc</item>
+        <item>Esprit</item>
+        <item>Esselunga</item>
+        <item>Esso</item>
+        <item>Euronics</item>
+        <item>Europcar</item>
+        <item>Famila</item>
+        <item>Gamestop</item>
+        <item>Hard Rock</item>
+        <item>Hertz</item>
+        <item>Ikea</item>
+        <item>Kiko</item>
+        <item>Feltrinelli</item>
+        <item>Leroy Merlin</item>
+        <item>Limoni</item>
+        <item>Lindt</item>
+        <item>Media World</item>
+        <item>Meta</item>
+        <item>Nectar</item>
+        <item>Nespresso</item>
+        <item>Oviesse</item>
+        <item>Pam</item>
+        <item>Penny</item>
+        <item>Piazza Italia</item>
+        <item>Pittarosso</item>
+        <item>Pink</item>
+        <item>Pre\'natal</item>
+        <item>Q8</item>
+        <item>Sephora</item>
+        <item>Shell</item>
+        <item>Sigma</item>
+        <item>Sisa</item>
+        <item>Terranova</item>
+        <item>Thun</item>
+        <item>Tigota\'</item>
+        <item>Tigros</item>
+        <item>TotalErg</item>
+        <item>Trenitalia</item>
+        <item>Trony</item>
+        <item>Ubik</item>
+        <item>Uci</item>
+        <item>Uniclub</item>
+        <item>Unieuro</item>
+        <item>Upim</item>
+    </string-array>
 </resources>

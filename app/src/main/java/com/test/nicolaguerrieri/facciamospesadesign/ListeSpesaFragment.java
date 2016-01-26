@@ -1,7 +1,6 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,7 +26,6 @@ import com.test.nicolaguerrieri.facciamospesadesign.utility.Costanti;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 
 /**
@@ -72,7 +70,6 @@ public class ListeSpesaFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
         boolean showSpiegazione = prefs.getBoolean("spiegazione", false);
 
-
         if (showSpiegazione) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("spiegazione", false);
@@ -81,7 +78,6 @@ public class ListeSpesaFragment extends Fragment {
 
         }
 
-        Log.d("prova spiegazione", "spiegazione1 ");
         View view = inflater.inflate(R.layout.fragment_liste_spesa, container, false);
         final Button buttonCrea = (Button) view.findViewById(R.id.creaLista);
         final EditText nomeLista = (EditText) view.findViewById(R.id.nuovaLista);
@@ -116,7 +112,6 @@ public class ListeSpesaFragment extends Fragment {
                         } while (risultato.moveToNext()); //Move to next row
                     }
                 }
-
             }
         }
 
@@ -181,17 +176,14 @@ public class ListeSpesaFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
                 final Lista lista = (Lista) parent.getItemAtPosition(position);
                 Log.d(METHOD_NAME, "item: " + lista);
-
                 sampleDB.execSQL("DELETE FROM " + Costanti.TABLE_NAME_LISTA + " WHERE " + Costanti.COLUMN_NAME_ID + "='" + lista.getId() + "'");
                 Log.d(METHOD_NAME, "eliminato: " + lista.getNomeLista());
                 results.remove(position);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getActivity(), "La lista " + lista.getNomeLista() + " è stata eliminata", Toast.LENGTH_LONG).show();
                 return false;
-
             }
         });
 
@@ -243,3 +235,4 @@ public class ListeSpesaFragment extends Fragment {
     }
 
 }
+//    var emergenza ="{\"negozi\":[\"A&O\", \"Aci\", \"Acqua&Sapone\", \"Auchian\", \"Arcaplanet\", \"Autogrill\", \"Bata\", \"Billa\", \"Blocco 31\", \"Bottega verde\", \"Brico\", \"Cad\", \"Calliope\", \"CalvinKlein\", \"Carrefour\", \"Cisalfa\", \"Coin\", \"Comet\", \"Conad\", \"Conbipel\", \"Coop\", \"Crai\", \"Decathlon\", \"Desigual\", \"Despar\", \"Leclerc\", \"Esprit\", \"Esselunga\", \"Esso\", \"Euronics\", \"Europcar\", \"Famila\", \"Gamestop\", \"Hard Rock\", \"Hertz\", \"Ikea\", \"Kiko\", \"Feltrinelli\", \"Leroy Merlin\", \"Limoni\", \"Lindt\", \"Media World\", \"Meta\", \"Nectar\", \"Nespresso\", \"Oviesse\", \"Pam\", \"Penny\", \"Piazza Italia\", \"Pittarosso\",  \"Pink\", \"Pre'natal\", \"Q8\", \"Sephora\", \"Shell\", \"Sigma\", \"Sisa\", \"Terranova\", \"Thun\", \"Tigota'\", \"Tigros\", \"TotalErg\", \"Trenitalia\", \"Trony\", \"Ubik\", \"Uci\", \"Uniclub\", \"Unieuro\", \"Upim\"]}";

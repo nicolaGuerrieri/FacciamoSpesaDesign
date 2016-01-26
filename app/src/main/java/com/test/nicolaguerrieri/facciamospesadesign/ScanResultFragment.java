@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -233,6 +234,13 @@ public class ScanResultFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         negoziResult = ((MainActivity) getActivity()).getListaNegozi();
+        if (negoziResult.size() == 0) {
+            // se qualcosa è andato storto
+            int holderint = getResources().getIdentifier("negozi", "array",
+                    getActivity().getPackageName()); // You had used "name"
+            String[] mess = getResources().getStringArray(holderint);
+            ((MainActivity) getActivity()).setListaNegozi(new ArrayList<String>(Arrays.asList(mess)));
+        }
         //tiriamo su da chiamata json
         adapter.addAll(negoziResult);
         adapter.add("Seleziona un negozio");

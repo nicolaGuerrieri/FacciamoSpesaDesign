@@ -171,8 +171,8 @@ public class Utility {
                         spiegaUnPo("Utilizza il comodissimo widget per avere sempre la tua lista della spesa sott'occhio", 6, R.layout.dialog_custom_widget, "Ok", activity);
                     }
                 });
-                imageResource = activity.getResources().getIdentifier("@drawable/selez_nome", null, activity.getPackageName());
-                imageResource2 = activity.getResources().getIdentifier("@drawable/carte_grid", null, activity.getPackageName());
+                imageResource = activity.getResources().getIdentifier("@drawable/inserisci_nome_carta", null, activity.getPackageName());
+                imageResource2 = activity.getResources().getIdentifier("@drawable/aggiungi_carta", null, activity.getPackageName());
                 imageResource3 = activity.getResources().getIdentifier("@drawable/elimina_carta", null, activity.getPackageName());
                 break;
 

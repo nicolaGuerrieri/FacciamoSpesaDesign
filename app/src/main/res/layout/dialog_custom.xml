@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/textDialog"
         android:layout_width="340dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:text="Scansiona le tue carte fedeltà e portala sempre con te"
         android:textColor="@color/white"
         android:textSize="20dp"

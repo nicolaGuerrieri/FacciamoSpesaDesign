@@ -96,7 +96,7 @@ public class CarteViewFragment extends Fragment {
         textCodice.setText(carta.getCodice());
         textCodice.setTypeface(null, Typeface.BOLD);
 
-        String uri = "@drawable/" + carta.getLogo().toLowerCase();
+        String uri = "@drawable/" + carta.getLogo().toLowerCase().trim().replace(" ", "");
         Log.d("", uri);
         Integer imageResource = null;
         Drawable res = null;

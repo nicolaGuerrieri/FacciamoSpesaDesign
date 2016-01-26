@@ -63,8 +63,8 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         Carta carta = listaCarte.get(position);
-        String uri = "@drawable/" + carta.getLogo().toLowerCase();
-        Log.d("", uri);
+        String uri = "@drawable/" + carta.getLogo().toLowerCase().trim().replace(" ", "");
+        Log.d("uri cercato >>>>> ", uri);
         Integer imageResource = null;
         Drawable res = null;
         try {
