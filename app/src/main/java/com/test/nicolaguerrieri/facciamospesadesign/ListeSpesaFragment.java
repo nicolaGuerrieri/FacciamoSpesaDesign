@@ -1,7 +1,6 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -67,16 +66,16 @@ public class ListeSpesaFragment extends Fragment {
                              Bundle savedInstanceState) {
         final String METHOD_NAME = ".onCreateView() >>>> ";
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
-        boolean showSpiegazione = prefs.getBoolean("spiegazione", false);
+        /**    SharedPreferences prefs = getActivity().getSharedPreferences("negozi", getActivity().MODE_PRIVATE);
+         boolean showSpiegazione = prefs.getBoolean("spiegazione", false);
 
-        if (showSpiegazione) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("spiegazione", false);
-            editor.commit();
-            Log.d("prova spiegazione", "spiegazione");
+         if (showSpiegazione) {
+         SharedPreferences.Editor editor = prefs.edit();
+         editor.putBoolean("spiegazione", false);
+         editor.commit();
+         Log.d("prova spiegazione", "spiegazione");
 
-        }
+         }**/
 
         View view = inflater.inflate(R.layout.fragment_liste_spesa, container, false);
         final Button buttonCrea = (Button) view.findViewById(R.id.creaLista);

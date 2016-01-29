@@ -5,8 +5,8 @@
     android:layout_height="wrap_content">
 
     <PreferenceCategory
-        android:summary="Licenze"
-        android:title="Licenze">
+        android:summary="Librerie"
+        android:title="Librerie">
         <Preference
             android:id="@+id/licenze"
             android:key="zxing"

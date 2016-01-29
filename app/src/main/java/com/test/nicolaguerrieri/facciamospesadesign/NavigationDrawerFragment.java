@@ -1,17 +1,17 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -102,7 +101,7 @@ public class NavigationDrawerFragment extends Fragment {
         twAiuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).apriHelp();
+                ((MainActivity) getActivity()).apriHelp();
             }
         });
         mDrawerListView = (ListView) drawerView.findViewById(R.id.listMenu);
@@ -272,8 +271,17 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+
+
+        if (((MainActivity) getActivity()).getmTitle().equals(getString(R.string.title_info))) {
+
+            ((MainActivity) getActivity()).setmTitle(((MainActivity) getActivity()).getmTitleHold());
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle(((MainActivity) getActivity()).getmTitle());
+            ((MainActivity) getActivity()).onBackPressed();
+        } else {
+            if (mDrawerToggle.onOptionsItemSelected(item)) {
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -285,6 +293,8 @@ public class NavigationDrawerFragment extends Fragment {
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
+
+
         //sto cazzo di comando apre tipo una toolbar che per ora non usiamo
         //       actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 //        actionBar.setTitle(R.string.app_name);

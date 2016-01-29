@@ -55,17 +55,33 @@ public class MainActivity extends AppCompatActivity
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    private CharSequence mTitle;
+    public CharSequence mTitle;
+    public CharSequence mTitleHold;
+
+    public CharSequence getmTitle() {
+        return mTitle;
+    }
+
+    public CharSequence getmTitleHold() {
+        return mTitleHold;
+    }
+
+    public void setmTitleHold(CharSequence mTitleHold) {
+        this.mTitleHold = mTitleHold;
+    }
+
+    public void setmTitle(CharSequence mTitle) {
+        this.mTitle = mTitle;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            DeployGate.logDebug("we compà");
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-            mTitle = getTitle();
+            mTitle = getString(R.string.title_todo);
 
             // Set up the drawer.
             mNavigationDrawerFragment.setUp(
@@ -164,6 +180,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new ScanResultFragment().newInstance("", "");
                 break;
             case Costanti.SETTINGS_FRAGMENT:
+                mTitleHold = mTitle;
                 fragment = new PreferenzeFragment().newInstance("", "");
                 break;
         }
@@ -189,6 +206,7 @@ public class MainActivity extends AppCompatActivity
 
 
         getSupportActionBar().setTitle(mTitle);
+
     }
 
     public void onSectionAttached(int number) {
@@ -215,6 +233,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case 5:
                 mTitle = getString(R.string.title_section4);
+                break;
+            case 6:
+                mTitle = getString(R.string.title_info);
                 break;
 
         }
@@ -269,7 +290,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }//16908332
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -341,11 +362,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
 
+        if (mNavigationDrawerFragment.isDrawerOpen()) {
+            mNavigationDrawerFragment.closeDrawer();
+        }
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             getSupportFragmentManager().popBackStack();
-
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right_);
         } else {
             //super.onBackPressed();
 

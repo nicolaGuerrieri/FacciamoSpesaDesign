@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -242,8 +244,17 @@ public class ScanResultFragment extends Fragment {
             ((MainActivity) getActivity()).setListaNegozi(new ArrayList<String>(Arrays.asList(mess)));
         }
         //tiriamo su da chiamata json
+
+        Collections.sort(negoziResult, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.compareToIgnoreCase(s2);
+            }
+        });
+
         adapter.addAll(negoziResult);
         adapter.add("Seleziona un negozio");
+
 
         spinner.setAdapter(adapter);
         spinner.setSelection(adapter.getCount());
