@@ -10,16 +10,29 @@
         <Preference
             android:id="@+id/licenze"
             android:key="zxing"
-            android:summary="Zxing"
-            android:title="zxing library" />
+            android:title="Zxing">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/zxing/zxing" />
+        </Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Contatti"
         android:title="Contatti">
         <Preference
-            android:id="@+id/licenze"
+            android:id="@+id/contatti"
             android:key="nome"
             android:summary="guerrierinicola@gmail.com "
-            android:title="Mail" />
+            android:title="Contatto sviluppatore" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="Termini e condizioni"
+        android:title="Termini e condizioni">
+
+        <Preference
+            android:id="@+id/copy"
+            android:key="nome"
+            android:summary="Facciamo spesa è un\'app che permette agli utenti di scannerizzare e portare sempre con se le fidelity card in possesso degli stessi. Le informazioni, immagini e i nomi contenuti nell'app sono dei legittimi proprietari. Per questo gli sviluppatori di Facciamo spesa non si assumono alcuna responsabilità in caso di uso improprio."
+            android:title="Termini di utilizzo" />
     </PreferenceCategory>
 </PreferenceScreen>
