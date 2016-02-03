@@ -265,7 +265,9 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // menu impostazioni
-        inflater.inflate(R.menu.menu_widget, menu);
+        if (!((MainActivity) getActivity()).getmTitle().equals(getString(R.string.title_info))) {
+            inflater.inflate(R.menu.menu_widget, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 

@@ -6,7 +6,7 @@
 
     <PreferenceCategory
         android:summary="Librerie"
-        android:title="Librerie">
+        android:title="Librerie terzi">
         <Preference
             android:id="@+id/licenze"
             android:key="zxing"
@@ -22,17 +22,28 @@
         <Preference
             android:id="@+id/contatti"
             android:key="nome"
-            android:summary="guerrierinicola@gmail.com "
-            android:title="Contatto sviluppatore" />
+            android:summary="guerrieri.dev@gmail.com "
+            android:title="E-mail" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="Valuta"
+        android:title="Valuta">
+        <Preference
+            android:id="@+id/val"
+            android:key="Valuta"
+            android:title="Valuta Facciamo spesa">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/zxing/zxing" />
+        </Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="Termini e condizioni"
         android:title="Termini e condizioni">
-
         <Preference
             android:id="@+id/copy"
             android:key="nome"
-            android:summary="Facciamo spesa è un\'app che permette agli utenti di scannerizzare e portare sempre con se le fidelity card in possesso degli stessi. Le informazioni, immagini e i nomi contenuti nell'app sono dei legittimi proprietari. Per questo gli sviluppatori di Facciamo spesa non si assumono alcuna responsabilità in caso di uso improprio."
-            android:title="Termini di utilizzo" />
+            android:layout="@layout/pref"
+            android:title="Facciamo spesa è un\'app che permette agli utenti di scannerizzare e portare sempre con se le fidelity card in possesso degli stessi. Le informazioni, immagini e i nomi contenuti nell'app sono dei legittimi proprietari. Per questo gli sviluppatori di Facciamo spesa non si assumono alcuna responsabilità in caso di uso improprio." />
     </PreferenceCategory>
 </PreferenceScreen>

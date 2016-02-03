@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
                 // close this activity
                 finish();
             }
-        }, 3000);
+        }, 1500);
     }
 
     @Override

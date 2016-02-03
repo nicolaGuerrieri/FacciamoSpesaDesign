@@ -44,11 +44,7 @@ public class WelcomeFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
 
-    Integer[] imageIDs = {
-            R.drawable.carrello,
-            R.drawable.carrello,
-            R.drawable.conad,
-    };
+
     private OnFragmentInteractionListener mListener;
 
 

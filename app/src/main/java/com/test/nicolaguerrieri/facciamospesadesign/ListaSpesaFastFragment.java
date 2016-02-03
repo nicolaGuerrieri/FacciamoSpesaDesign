@@ -655,56 +655,6 @@ public class ListaSpesaFastFragment extends Fragment implements RecordInterfaceF
     }
 
 
-    public void apriAltraDialog(String testoPass, int step) {
-        // apriamo dialog per spiegare
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.dialog_custom_spesa);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-        TextView tw = (TextView) dialog.findViewById(R.id.textDialog);
-        tw.setText(testoPass);
-
-        ImageView iw = (ImageView) dialog.findViewById(R.id.imageDialog);
-
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Integer imageResource = null;
-        Drawable res = null;
-
-
-        if (step == 1) {
-            dialogButton.setText("Next");
-            imageResource = getActivity().getResources().getIdentifier("@drawable/testmio", null, getActivity().getPackageName());
-            res = getActivity().getResources().getDrawable(imageResource);
-
-
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    apriDialogFinale("Condividi la tua lista della spesa con chi fa la spesa al posto tuo...");
-                }
-            });
-        } else {
-
-            //NON USATO
-            dialogButton.setText("Fine");
-
-            imageResource = getActivity().getResources().getIdentifier("@drawable/barrashare", null, getActivity().getPackageName());
-            res = getActivity().getResources().getDrawable(imageResource);
-
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-        }
-        iw.setImageDrawable(res);
-        dialog.show();
-
-    }
 
     public void apriDialogFinale(String testoPass) {
 // apriamo dialog per spiegare

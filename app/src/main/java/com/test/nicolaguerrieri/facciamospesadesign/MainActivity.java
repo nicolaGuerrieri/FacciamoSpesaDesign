@@ -129,8 +129,10 @@ public class MainActivity extends AppCompatActivity
         args.putInt(ARG_SECTION_NUMBER, position);
         fragment.setArguments(args);
 
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
+        if(fragmentManager.getBackStackEntryCount() != 0) {
+            getSupportFragmentManager().popBackStack();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
         // PER ELIMINARE IL COMPORTAMENTO PER CUI IL TASTO INDIETRO PORTA AL FRAGMENT PRECEDENTE BASTA RIMUOVERE
         // addToBackStack(null).
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -206,6 +208,7 @@ public class MainActivity extends AppCompatActivity
 
 
         getSupportActionBar().setTitle(mTitle);
+
 
     }
 
