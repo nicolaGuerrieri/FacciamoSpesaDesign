@@ -3,6 +3,6 @@
     android:initialLayout="@layout/activity_widget"
     android:minHeight="400dip"
     android:minWidth="300dip"
-
+    android:widgetCategory="home_screen|keyguard"
     android:resizeMode="vertical|horizontal"
  />
