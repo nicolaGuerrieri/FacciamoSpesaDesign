@@ -1,15 +1,20 @@
 package com.test.nicolaguerrieri.facciamospesadesign;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -252,12 +257,24 @@ public class CarteFragment extends Fragment implements AbsListView.OnItemClickLi
 
     public void scanCard() {
         IntentIntegrator intent = new IntentIntegrator(getActivity());
-        intent.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                intent.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
+            } else {
+                String[] permissions = {Manifest.permission.CAMERA};
+                ActivityCompat.requestPermissions(getActivity(), permissions, 0);
+                intent.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
+            }
+        } else {
+            intent.initiateScan(IntentIntegrator.PRODUCT_CODE_TYPES);
+        }
+    }
+
 
 //        Intent intentShowResult = new Intent(this, ScanActivity.class);
 //        intentShowResult.putExtra("codice", "205007113290");
 //        startActivityForResult(intentShowResult, 18);
-    }
 
 
     public List<Carta> getCarte() {

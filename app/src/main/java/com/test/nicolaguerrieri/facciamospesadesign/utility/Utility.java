@@ -141,7 +141,9 @@ public class Utility {
                     public void onClick(View v) {
                         dialog.dismiss();
                         if (!messaggioBottone.equalsIgnoreCase("Ok")) {
-                            spiegaUnPo("Hai bisogno di più liste della spesa separate?\nClicca su \"Liste della spesa\" e crea la tue...", 5, R.layout.dialog_custom, "Next", activity);
+                         //   spiegaUnPo("Hai bisogno di più liste della spesa separate?\nClicca su \"Liste della spesa\" e crea la tue...", 5, R.layout.dialog_custom, "Next", activity);
+                            spiegaUnPoDoppio("Aggiungi le tue fidelity card, clicca su scan", "Inquadra il tuo codice a barre e attendi la scansione", "Seleziona il negozio a cui appartiene la fidelity card", 3, R.layout.dialog_custom_spesa_long_carte, "Next", activity);
+
                         }
                     }
                 });
@@ -155,7 +157,9 @@ public class Utility {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        spiegaUnPoDoppio("Oppure clicca sul pulsante \"Matita\" ed aggiungi il tuo negozio", "Clicca sul tasto ''Più'' per aggiungere la carta", "O tieni premuto sulla carta che vuoi eliminare", 4, R.layout.dialog_custom_spesa_long_carte, "Next", activity);
+                        //spiegaUnPoDoppio("Oppure clicca sul pulsante \"Matita\" ed aggiungi il tuo negozio", "Clicca sul tasto ''Più'' per aggiungere la carta", "O tieni premuto sulla carta che vuoi eliminare", 4, R.layout.dialog_custom_spesa_long_carte, "Next", activity);
+                        spiegaUnPo("Utilizza il comodissimo widget per avere sempre la tua lista della spesa sott'occhio", 6, R.layout.dialog_custom_widget, "Ok", activity);
+
                     }
                 });
                 imageResource = activity.getResources().getIdentifier("@drawable/scan", null, activity.getPackageName());
